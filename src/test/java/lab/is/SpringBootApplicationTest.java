@@ -52,7 +52,9 @@ abstract class SpringBootApplicationTest {
         entityManager.clear(); // сбросить кэш при необходимости
     }
 
-    protected abstract void createEntitiesInDb();
+    protected void createEntitiesInDb() {
+        //TODO
+    }
 
     private void forceWritingToDb() {
         entityManager.flush();
