@@ -14,7 +14,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     @Test
     void createMusicBand_ReturnsResponseWithStatusCreated() throws Exception {
         setupDb();
-        final Long id = 1L;
+        final Long id = 3L;
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
@@ -53,7 +53,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isCreated()
             );
 
-        checkEntityExistByIdAndExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedJsonString(
             id,
             """
             {
@@ -89,7 +89,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     @Test
     void createMusicBand_ReturnsResponseWithStatusBadRequest() throws Exception {
         setupDb();
-        final Long id = 1L;
+        final Long id = 3L;
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
@@ -134,7 +134,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     @Test
     void createMusicBandWithSubObjectsIds_ReturnsResponseWithStatusCreated() throws Exception {
         setupDb();
-        final Long id = 1L;
+        final Long id = 3L;
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
@@ -164,7 +164,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isCreated()
             );
 
-        checkEntityExistByIdAndExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedJsonString(
             id,
             """
             {
@@ -196,7 +196,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     @Test
     void createMusicBandWithSubObjectsIds_ReturnsResponseWithStatusNotFound() throws Exception {
         setupDb();
-        final Long id = 1L;
+        final Long id = 3L;
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
@@ -233,7 +233,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     void getMusicBandById_ReturnsResponseWithStatusOk() throws Exception {
         setupDb();
         final Long id = 1L;
-        checkEntityExistByIdAndExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedJsonString(
             id,
             """
             {
@@ -270,15 +270,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     void getMusicBandById_ReturnsResponseWithStatusNotFound() throws Exception {
         setupDb();
         final Long id = 100L;
-
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .get("/api/v1/music-bands/{id}", id);
-
-        mockMvc
-            .perform(requestBuilder)
-            .andExpectAll(
-                status().isNotFound()
-            );
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -317,7 +309,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNoContent()
             );
 
-        checkEntityExistByIdAndExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedJsonString(
             id,
             """
             {
@@ -376,6 +368,8 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isNotFound()
             );
+
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -419,7 +413,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isBadRequest()
             );
 
-        checkEntityExistByIdAndExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedJsonString(
             id,
             """
             {
@@ -484,7 +478,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNoContent()
             );
 
-        checkEntityExistByIdAndExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedJsonString(
             id,
             """
             {
@@ -549,7 +543,37 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNotFound()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityExistByIdAndEqualExpectedJsonString(
+            id,
+            """
+            {
+                "id": 1,
+                "name": "012345678901234567890123456789",
+                "coordinates": {
+                    "id": 1,
+                    "x": 1.0,
+                    "y": 2
+                },
+                "creationDate": "2024-08-03T19:09:40.936657",
+                "genre": "POST_PUNK",
+                "numberOfParticipants": 9223372036854775807,
+                "singlesCount": 9223372036854775807,
+                "description": null,
+                "bestAlbum": {
+                    "id": 1,
+                    "name": "first album",
+                    "length": 12
+                },
+                "albumsCount": 9223372036854775807,
+                "establishmentDate": "2024-08-03",
+                "studio": {
+                    "id": 1,
+                    "name": "first studio",
+                    "address": "first studio address"
+                }
+            }
+            """
+        );
     }
 
     @Test

@@ -75,7 +75,7 @@ abstract class SpringBootApplicationTest {
         entityManager.clear();
     }
 
-    protected void checkEntityExistByIdAndExpectedJsonString(
+    protected void checkEntityExistByIdAndEqualExpectedJsonString(
         Long id,
         String expectedJsonString
     ) throws Exception {
