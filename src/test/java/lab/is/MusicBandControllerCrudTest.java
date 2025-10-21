@@ -1,19 +1,15 @@
 package lab.is;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-@AutoConfigureMockMvc
 class MusicBandControllerCrudTest extends SpringBootApplicationTest {
-    @Autowired
-    MockMvc mockMvc;
+    protected String getEndpointGettingEntityById() {
+        return "/api/v1/music-bands/{id}";
+    }
 
     @Test
     void createMusicBand_ReturnsResponseWithStatusCreated() throws Exception {
@@ -54,7 +50,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isCreated()
             );
 
-        checkMusicBandByIdAndExpectedJsonString(
+        checkEntityExistByIdAndExpectedJsonString(
             id,
             """
             {
@@ -123,7 +119,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isBadRequest()
             );
 
-        checkMusicBandByIdNotFound(id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -156,7 +152,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isCreated()
             );
 
-        checkMusicBandByIdAndExpectedJsonString(
+        checkEntityExistByIdAndExpectedJsonString(
             id,
             """
             {
@@ -213,14 +209,14 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNotFound()
             );
 
-        checkMusicBandByIdNotFound(id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
     void getMusicBandById_ReturnsResponseWithStatusOk() throws Exception {
         setupDb();
         final Long id = 1L;
-        checkMusicBandByIdAndExpectedJsonString(
+        checkEntityExistByIdAndExpectedJsonString(
             id,
             """
             {
@@ -298,7 +294,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNoContent()
             );
 
-        checkMusicBandByIdAndExpectedJsonString(
+        checkEntityExistByIdAndExpectedJsonString(
             id,
             """
             {
@@ -393,7 +389,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isBadRequest()
             );
 
-        checkMusicBandByIdAndExpectedJsonString(
+        checkEntityExistByIdAndExpectedJsonString(
             id,
             """
             {
@@ -436,7 +432,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNoContent()
             );
 
-        checkMusicBandByIdNotFound(id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -445,33 +441,6 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         final Long id = 100L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .delete("/api/v1/music-bands/{id}", id);
-
-        mockMvc
-            .perform(requestBuilder)
-            .andExpectAll(
-                status().isNotFound()
-            );
-    }
-
-    private void checkMusicBandByIdAndExpectedJsonString(
-        Long id,
-        String expectedJsonString
-    ) throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .get("/api/v1/music-bands/{id}", id);
-
-        mockMvc
-            .perform(requestBuilder)
-            .andExpectAll(
-                status().isOk(),
-                content().contentTypeCompatibleWith("application/json"),
-                content().json(expectedJsonString)
-            );
-    }
-
-    private void checkMusicBandByIdNotFound(Long id) throws Exception {
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .get("/api/v1/music-bands/{id}", id);
 
         mockMvc
             .perform(requestBuilder)
