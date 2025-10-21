@@ -187,7 +187,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
     @Test
     void deleteAlbumById_ReturnsResponseWithStatusNoContent() throws Exception {
         setupDb();
-        final Long id = 1L;
+        final Long id = 3L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .delete("/api/v1/albums/{id}", id);
 
@@ -213,4 +213,19 @@ class AlbumControllerTest extends SpringBootApplicationTest {
                 status().isNotFound()
             );
     }
+
+    @Test
+    void deleteAlbumById_ReturnsResponseWithStatusConflict() throws Exception {
+        setupDb();
+        final Long id = 1L;
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .delete("/api/v1/albums/{id}", id);
+
+        mockMvc
+            .perform(requestBuilder)
+            .andExpectAll(
+                status().isConflict()
+            );
+    }
+//TODO просмотреть корректность ids
 }

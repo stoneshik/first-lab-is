@@ -213,4 +213,19 @@ class StudioControllerTest extends SpringBootApplicationTest {
                 status().isNotFound()
             );
     }
+
+    @Test
+    void deleteStudioById_ReturnsResponseWithStatusConflict() throws Exception {
+        setupDb();
+        final Long id = 1L;
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .delete("/api/v1/studios/{id}", id);
+
+        mockMvc
+            .perform(requestBuilder)
+            .andExpectAll(
+                status().isConflict()
+            );
+    }
+//TODO просмотреть корректность ids
 }
