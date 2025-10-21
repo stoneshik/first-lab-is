@@ -9,3 +9,6 @@ spring:
       username: ${CONTAINER.USERNAME}
       password: ${CONTAINER.PASSWORD}
       url: ${CONTAINER.URL}
+  jpa:
+    generate-ddl: true
+    hibernate.ddl-auto: "update"
