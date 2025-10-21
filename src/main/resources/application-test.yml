@@ -1,0 +1,11 @@
+server:
+  port: "${IS_SERVICE_PORT}"
+
+spring:
+  main:
+    banner-mode: "off"
+  datasource:
+    own:
+      username: ${CONTAINER.USERNAME}
+      password: ${CONTAINER.PASSWORD}
+      url: ${CONTAINER.URL}
