@@ -44,6 +44,7 @@ class MusicBandControllerGetListTest extends SpringBootApplicationTest {
                             "id": 1,
                             "name": "first band",
                             "coordinates": {
+                                "id": 1,
                                 "x": 1.0,
                                 "y": 2
                             },
@@ -53,12 +54,14 @@ class MusicBandControllerGetListTest extends SpringBootApplicationTest {
                             "singlesCount": 5,
                             "description": "first band description",
                             "bestAlbum": {
+                                "id": 1,
                                 "name": "first album",
                                 "length": 12
                             },
                             "albumsCount": 2,
                             "establishmentDate": "2024-08-03",
                             "studio": {
+                                "id": 1
                                 "name": "first studio",
                                 "address": "first studio address"
                             }
@@ -67,6 +70,7 @@ class MusicBandControllerGetListTest extends SpringBootApplicationTest {
                             "id": 2,
                             "name": "012345678901234567890123456789",
                             "coordinates": {
+                                "id": 2,
                                 "x": -100.12314,
                                 "y": -2147483648
                             },
