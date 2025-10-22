@@ -1,5 +1,6 @@
 package lab.is.bd.entities;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -100,7 +101,7 @@ public class MusicBand {
     @ToString.Include
     @NotNull
     @Column(name = "establishment_date", nullable = false)
-    private LocalDateTime establishmentDate;
+    private LocalDate establishmentDate;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = {})
     @JoinColumn(
