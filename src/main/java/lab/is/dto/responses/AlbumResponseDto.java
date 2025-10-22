@@ -1,0 +1,16 @@
+package lab.is.dto.responses;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AlbumResponseDto {
+    private Integer id;
+    private String name;
+    private int length;
+}
