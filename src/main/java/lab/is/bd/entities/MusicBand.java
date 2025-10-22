@@ -115,3 +115,13 @@ public class MusicBand {
         this.creationDate = LocalDateTime.now();
     }
 }
+
+/*
+* все значения по которым есть фильтрация
+* name
+* genre
+* description
+* bestAlbum.name
+* studio.name
+* studio.address
+*/
