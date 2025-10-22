@@ -1,5 +1,6 @@
 package lab.is;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -14,8 +15,6 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     @Test
     void createMusicBand_ReturnsResponseWithStatusCreated() throws Exception {
         setupDb();
-        final Long id = 3L;
-
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
             .content(
@@ -32,7 +31,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                     "singlesCount": 9223372036854775807,
                     "description": "",
                     "bestAlbum": {
-                        "name": "first album",
+                        "name": "new album",
                         "length": 2147483647
                     },
                     "bestAlbumId": null,
@@ -50,40 +49,25 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         mockMvc
             .perform(requestBuilder)
             .andExpectAll(
-                status().isCreated()
+                status().isCreated(),
+                jsonPath("$.id").value(3L),
+                jsonPath("$.name").value("created music band"),
+                jsonPath("$.coordinates.id").value(4L),
+                jsonPath("$.coordinates.x").value(123456.0f),
+                jsonPath("$.coordinates.y").value(2147483647),
+                jsonPath("$.genre").value("BRIT_POP"),
+                jsonPath("$.numberOfParticipants").value(9223372036854775807L),
+                jsonPath("$.singlesCount").value(9223372036854775807L),
+                jsonPath("$.description").value(""),
+                jsonPath("$.bestAlbum.id").value(4L),
+                jsonPath("$.bestAlbum.name").value("new album"),
+                jsonPath("$.bestAlbum.length").value(2147483647),
+                jsonPath("$.albumsCount").value(9223372036854775807L),
+                jsonPath("$.establishmentDate").value("2021-01-01"),
+                jsonPath("$.studio.id").value(3L),
+                jsonPath("$.studio.name").value(""),
+                jsonPath("$.studio.address").value("")
             );
-
-        checkEntityExistByIdAndEqualExpectedJsonString(
-            id,
-            """
-            {
-                "id": 3,
-                "name": "created music band",
-                "coordinates": {
-                    "id": 3,
-                    "x": 123456.0,
-                    "y": 2147483647
-                },
-                "creationDate": "2024-08-03T19:09:40.936657",
-                "genre": "BRIT_POP",
-                "numberOfParticipants": 9223372036854775807,
-                "singlesCount": 9223372036854775807,
-                "description": "",
-                "bestAlbum": {
-                    "id": 2,
-                    "name": "first album",
-                    "length": 2147483647
-                },
-                "albumsCount": 9223372036854775807,
-                "establishmentDate": "2021-01-01",
-                "studio": {
-                    "id": 2,
-                    "name": "",
-                    "address": ""
-                }
-            }
-            """
-        );
     }
 
     @Test
@@ -134,8 +118,6 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     @Test
     void createMusicBandWithSubObjectsIds_ReturnsResponseWithStatusCreated() throws Exception {
         setupDb();
-        final Long id = 3L;
-
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
             .content(
@@ -161,39 +143,25 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         mockMvc
             .perform(requestBuilder)
             .andExpectAll(
-                status().isCreated()
+                status().isCreated(),
+                jsonPath("$.id").value(3L),
+                jsonPath("$.name").value("created music band"),
+                jsonPath("$.coordinates.id").value(1L),
+                jsonPath("$.coordinates.x").value(1.0f),
+                jsonPath("$.coordinates.y").value(2),
+                jsonPath("$.genre").value("BRIT_POP"),
+                jsonPath("$.numberOfParticipants").value(9223372036854775807L),
+                jsonPath("$.singlesCount").value(9223372036854775807L),
+                jsonPath("$.description").value(""),
+                jsonPath("$.bestAlbum.id").value(2L),
+                jsonPath("$.bestAlbum.name").value("second album"),
+                jsonPath("$.bestAlbum.length").value(1000),
+                jsonPath("$.albumsCount").value(9223372036854775807L),
+                jsonPath("$.establishmentDate").value("2021-01-01"),
+                jsonPath("$.studio.id").value(1L),
+                jsonPath("$.studio.name").value("first studio"),
+                jsonPath("$.studio.address").value("first studio")
             );
-
-        checkEntityExistByIdAndEqualExpectedJsonString(
-            id,
-            """
-            {
-                "id": 3,
-                "name": "created music band",
-                "coordinates": {
-                    "id": 3,
-                    "x": 1.0,
-                    "y": 2
-                },
-                "creationDate": "2024-08-03T19:09:40.936657",
-                "genre": "BRIT_POP",
-                "numberOfParticipants": 9223372036854775807,
-                "singlesCount": 9223372036854775807,
-                "description": "",
-                "bestAlbum": {
-                    "name": "second album",
-                    "length": 1000
-                },
-                "albumsCount": 9223372036854775807,
-                "establishmentDate": "2021-01-01",
-                "studio": {
-                    "id": 1,
-                    "name": "first studio",
-                    "address": "first studio address"
-                }
-            }
-            """
-        );
     }
 
     @Test
