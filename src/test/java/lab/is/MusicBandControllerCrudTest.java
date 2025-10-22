@@ -180,7 +180,10 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 "numberOfParticipants": 9223372036854775807,
                 "singlesCount": 9223372036854775807,
                 "description": "",
-                "bestAlbum": 2,
+                "bestAlbum": {
+                    "name": "second album",
+                    "length": 1000
+                },
                 "albumsCount": 9223372036854775807,
                 "establishmentDate": "2021-01-01",
                 "studio": {
@@ -205,7 +208,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 {
                     "name": "created music band",
                     "coordinates": null,
-                    "coordinatesId": 3,
+                    "coordinatesId": 4,
                     "genre": "BRIT_POP",
                     "numberOfParticipants": 9223372036854775807,
                     "singlesCount": 9223372036854775807,

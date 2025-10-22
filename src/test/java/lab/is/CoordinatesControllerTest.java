@@ -48,7 +48,7 @@ class CoordinatesControllerTest extends SpringBootApplicationTest {
     @Test
     void createCoordinates_ReturnsResponseWithStatusBadRequest() throws Exception {
         setupDb();
-        final Long id = 3L;
+        final Long id = 4L;
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/coordinates")
@@ -212,6 +212,7 @@ class CoordinatesControllerTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isNotFound()
             );
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -226,6 +227,16 @@ class CoordinatesControllerTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isConflict()
             );
+
+        checkEntityExistByIdAndEqualExpectedJsonString(
+            id,
+            """
+            {
+                "id": 1,
+                "x": 1.0,
+                "y": 2
+            }
+            """
+        );
     }
-//TODO просмотреть корректность ids
 }

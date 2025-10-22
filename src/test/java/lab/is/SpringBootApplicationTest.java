@@ -102,7 +102,17 @@ abstract class SpringBootApplicationTest {
             .name("first album")
             .length(12)
             .build();
+        Album album2 = Album.builder()
+            .name("second album")
+            .length(1000)
+            .build();
+        Album album3 = Album.builder()
+            .name("third album")
+            .length(9090909)
+            .build();
         entityManager.persist(album1);
+        entityManager.persist(album2);
+        entityManager.persist(album3);
 
         Studio studio1 = Studio.builder()
             .name("first studio")

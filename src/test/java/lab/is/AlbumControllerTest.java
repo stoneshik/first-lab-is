@@ -79,8 +79,8 @@ class AlbumControllerTest extends SpringBootApplicationTest {
             """
             {
                 "id": 1,
-                "name": "created album",
-                "length": 1
+                "name": "first album",
+                "length": 12
             }
             """
         );
@@ -212,6 +212,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isNotFound()
             );
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -226,6 +227,16 @@ class AlbumControllerTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isConflict()
             );
+
+        checkEntityExistByIdAndEqualExpectedJsonString(
+            id,
+            """
+            {
+                "id": 1,
+                "name": "first album",
+                "length": 12
+            }
+            """
+        );
     }
-//TODO просмотреть корректность ids
 }

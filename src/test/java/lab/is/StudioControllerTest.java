@@ -14,7 +14,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
     @Test
     void createStudio_ReturnsResponseWithStatusCreated() throws Exception {
         setupDb();
-        final Long id = 4L;
+        final Long id = 3L;
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/studios")
@@ -37,7 +37,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
             id,
             """
             {
-                "id": 4,
+                "id": 3,
                 "name": "created studio",
                 "address": "created studio address"
             }
@@ -187,7 +187,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
     @Test
     void deleteStudioById_ReturnsResponseWithStatusNoContent() throws Exception {
         setupDb();
-        final Long id = 1L;
+        final Long id = 2L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .delete("/api/v1/studios/{id}", id);
 
@@ -212,6 +212,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isNotFound()
             );
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -226,6 +227,15 @@ class StudioControllerTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isConflict()
             );
+        checkEntityExistByIdAndEqualExpectedJsonString(
+            id,
+            """
+            {
+                "id": 1,
+                "name": "first studio",
+                "address": "first studio address"
+            }
+            """
+        );
     }
-//TODO просмотреть корректность ids
 }
