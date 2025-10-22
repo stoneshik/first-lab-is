@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CoordinatesResponseDto {
-    private Integer id;
+    private Long id;
     private Float x;
     private int y;
 }

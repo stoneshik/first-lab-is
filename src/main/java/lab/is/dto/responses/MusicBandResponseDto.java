@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MusicBandResponseDto {
-    private Integer id;
+    private Long id;
     private String name;
     private CoordinatesResponseDto coordinates;
     private LocalDateTime creationDate;
