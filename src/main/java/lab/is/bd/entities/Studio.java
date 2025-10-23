@@ -37,7 +37,7 @@ public class Studio {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "studio_seq")
     @SequenceGenerator(name = "studio_seq", sequenceName = "studio_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @ToString.Include
     @NotNull

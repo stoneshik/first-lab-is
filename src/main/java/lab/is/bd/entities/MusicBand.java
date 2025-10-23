@@ -45,7 +45,7 @@ public class MusicBand {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "music_band_seq")
     @SequenceGenerator(name = "music_band_seq", sequenceName = "music_band_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @ToString.Include
     @NotBlank

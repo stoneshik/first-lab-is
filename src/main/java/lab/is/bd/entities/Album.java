@@ -38,7 +38,7 @@ public class Album {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "album_seq")
     @SequenceGenerator(name = "album_seq", sequenceName = "album_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @ToString.Include
     @NotBlank

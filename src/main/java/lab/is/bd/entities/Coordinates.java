@@ -37,7 +37,7 @@ public class Coordinates {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "coordinates_seq")
     @SequenceGenerator(name = "coordinates_seq", sequenceName = "coordinates_seq", allocationSize = 1)
     @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+    private Long id;
 
     @ToString.Include
     @NotNull
