@@ -25,7 +25,10 @@ public class MusicBandToEntityFromDtoUpdateRequest {
     private final StudioService studioService;
 
     @Transactional(readOnly = true)
-    public MusicBand toEntityFromDto(MusicBandRequestUpdateDto dto) {
+    public MusicBand toEntityFromDto(
+        MusicBandRequestUpdateDto dto,
+        MusicBand foundedMusicBand
+    ) {
         if (isCombinationInfoAboutNestedObjectsDtoIncorrect(
             dto.getCoordinates(),
             dto.getBestAlbum(),
@@ -36,19 +39,19 @@ public class MusicBandToEntityFromDtoUpdateRequest {
         )) {
             throw new IncorrectDtoInRequestException("Ошибка в комбинации в информации о вложенных объектов");
         }
-        Coordinates coordinates = extractOrCreateCoordinatesEntityFromMusicBandDto(
+        Coordinates coordinates = findOrCreateCoordinatesEntityByMusicBandDto(
             dto.getCoordinates(),
             dto.getCoordinatesId()
         );
-        Album bestAlbum = extractOrCreateBestAlbumEntityFromMusicBandDto(
+        Album bestAlbum = findOrCreateBestAlbumEntityByMusicBandDto(
             dto.getBestAlbum(),
             dto.getBestAlbumId()
         );
-        Studio studio = extractOrCreateStudioEntityFromMusicBandDto(
+        Studio studio = findOrCreateStudioEntityByMusicBandDto(
             dto.getStudio(),
             dto.getStudioId()
         );
-        return MusicBand.builder()
+        return foundedMusicBand.toBuilder()
             .name(dto.getName())
             .coordinates(coordinates)
             .creationDate(dto.getCreationDate())
@@ -79,7 +82,7 @@ public class MusicBandToEntityFromDtoUpdateRequest {
         );
     }
 
-    private Coordinates extractOrCreateCoordinatesEntityFromMusicBandDto(
+    private Coordinates findOrCreateCoordinatesEntityByMusicBandDto(
         CoordinatesRequestUpdateDto dto,
         Long id
     ) {
@@ -92,7 +95,7 @@ public class MusicBandToEntityFromDtoUpdateRequest {
         return coordinatesService.findByIdReturnsEntity(id);
     }
 
-    private Album extractOrCreateBestAlbumEntityFromMusicBandDto(
+    private Album findOrCreateBestAlbumEntityByMusicBandDto(
         AlbumRequestUpdateDto dto,
         Long id
     ) {
@@ -106,7 +109,7 @@ public class MusicBandToEntityFromDtoUpdateRequest {
         return albumService.findByIdReturnsEntity(id);
     }
 
-    private Studio extractOrCreateStudioEntityFromMusicBandDto(
+    private Studio findOrCreateStudioEntityByMusicBandDto(
         StudioRequestUpdateDto dto,
         Long id
     ) {

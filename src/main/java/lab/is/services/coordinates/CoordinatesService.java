@@ -58,6 +58,7 @@ public class CoordinatesService {
             );
         }
         coordinatesRepository.delete(coordinates);
+        coordinatesRepository.flush();
     }
 
     public Coordinates findByIdReturnsEntity(Long id) {

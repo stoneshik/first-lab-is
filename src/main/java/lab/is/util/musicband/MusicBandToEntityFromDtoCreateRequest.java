@@ -36,11 +36,11 @@ public class MusicBandToEntityFromDtoCreateRequest {
         )) {
             throw new IncorrectDtoInRequestException("Ошибка в комбинации в информации о вложенных объектов");
         }
-        Coordinates coordinates = extractOrCreateCoordinatesEntityFromMusicBandDto(
+        Coordinates coordinates = findOrCreateCoordinatesEntityByMusicBandDto(
             dto.getCoordinates(),
             dto.getCoordinatesId()
         );
-        Album bestAlbum = extractOrCreateBestAlbumEntityFromMusicBandDto(
+        Album bestAlbum = findOrCreateBestAlbumEntityByMusicBandDto(
             dto.getBestAlbum(),
             dto.getBestAlbumId()
         );
@@ -79,7 +79,7 @@ public class MusicBandToEntityFromDtoCreateRequest {
         );
     }
 
-    private Coordinates extractOrCreateCoordinatesEntityFromMusicBandDto(
+    private Coordinates findOrCreateCoordinatesEntityByMusicBandDto(
         CoordinatesRequestCreateDto dto,
         Long id
     ) {
@@ -92,7 +92,7 @@ public class MusicBandToEntityFromDtoCreateRequest {
         return coordinatesService.findByIdReturnsEntity(id);
     }
 
-    private Album extractOrCreateBestAlbumEntityFromMusicBandDto(
+    private Album findOrCreateBestAlbumEntityByMusicBandDto(
         AlbumRequestCreateDto dto,
         Long id
     ) {

@@ -58,6 +58,7 @@ public class StudioService {
             );
         }
         studioRepository.delete(studio);
+        studioRepository.flush();
     }
 
     public Studio findByIdReturnsEntity(Long id) {

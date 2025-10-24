@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lab.is.dto.requests.musicband.MusicBandRequestCreateDto;
 import lab.is.dto.requests.musicband.MusicBandRequestUpdateDto;
 import lab.is.dto.responses.MusicBandResponseDto;
-import lab.is.services.MusicBandService;
+import lab.is.services.musicband.MusicBandService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
