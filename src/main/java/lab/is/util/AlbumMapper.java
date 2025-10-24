@@ -1,13 +1,21 @@
 package lab.is.util;
 
 import lab.is.bd.entities.Album;
-import lab.is.dto.requests.AlbumRequestDto;
+import lab.is.dto.requests.album.AlbumRequestCreateDto;
+import lab.is.dto.requests.album.AlbumRequestUpdateDto;
 import lab.is.dto.responses.AlbumResponseDto;
 
 public class AlbumMapper {
     private AlbumMapper() {}
 
-    public static Album toEntityFromDto(AlbumRequestDto dto) {
+    public static Album toEntityFromDto(AlbumRequestCreateDto dto) {
+        return Album.builder()
+            .name(dto.getName())
+            .length(dto.getLength())
+            .build();
+    }
+
+    public static Album toEntityFromDto(AlbumRequestUpdateDto dto) {
         return Album.builder()
             .name(dto.getName())
             .length(dto.getLength())

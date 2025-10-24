@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import lab.is.dto.requests.StudioRequestDto;
+import lab.is.dto.requests.studio.StudioRequestCreateDto;
+import lab.is.dto.requests.studio.StudioRequestUpdateDto;
 import lab.is.dto.responses.StudioResponseDto;
 import lab.is.services.StudioService;
 import lombok.RequiredArgsConstructor;
@@ -31,14 +32,14 @@ public class StudioController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody StudioRequestDto dto) {
-        Long createdId = studioService.create(dto);
+    public ResponseEntity<Void> create(@RequestBody StudioRequestCreateDto dto) {
+        Long createdId = studioService.create(dto).getId();
         URI location = URI.create(URI_RESOURCE + "/" + createdId);
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody StudioRequestDto dto) {
+    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody StudioRequestUpdateDto dto) {
         studioService.update(id, dto);
         return ResponseEntity.noContent().build();
     }

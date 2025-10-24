@@ -1,9 +1,12 @@
-package lab.is.dto.requests;
+package lab.is.dto.requests.musicband;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lab.is.bd.entities.MusicGenre;
+import lab.is.dto.requests.album.AlbumRequestCreateDto;
+import lab.is.dto.requests.coordinates.CoordinatesRequestCreateDto;
+import lab.is.dto.requests.studio.StudioRequestCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,19 +16,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MusicBandRequestDto {
+public class MusicBandRequestUpdateDto {
     private String name;
-    private CoordinatesRequestDto coordinates;
+    private CoordinatesRequestCreateDto coordinates;
     private Long coordinatesId;
     private LocalDateTime creationDate;
     private MusicGenre genre;
     private Long numberOfParticipants;
     private Long singlesCount;
     private String description;
-    private AlbumRequestDto bestAlbum;
+    private AlbumRequestCreateDto bestAlbum;
     private Long bestAlbumId;
     private long albumsCount;
     private LocalDate establishmentDate;
-    private StudioRequestDto studio;
+    private StudioRequestCreateDto studio;
     private Long studioId;
 }

@@ -1,15 +1,16 @@
 package lab.is.util;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lab.is.bd.entities.Album;
 import lab.is.bd.entities.Coordinates;
 import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.Studio;
-import lab.is.dto.requests.AlbumRequestDto;
-import lab.is.dto.requests.CoordinatesRequestDto;
-import lab.is.dto.requests.MusicBandRequestDto;
-import lab.is.dto.requests.StudioRequestDto;
+import lab.is.dto.requests.album.AlbumRequestCreateDto;
+import lab.is.dto.requests.coordinates.CoordinatesRequestCreateDto;
+import lab.is.dto.requests.musicband.MusicBandRequestCreateDto;
+import lab.is.dto.requests.studio.StudioRequestCreateDto;
 import lab.is.dto.responses.MusicBandResponseDto;
 import lab.is.exceptions.IncorrectDtoInRequestException;
 import lab.is.services.AlbumService;
@@ -24,15 +25,19 @@ public class MusicBandMapper {
     private final CoordinatesService coordinatesService;
     private final StudioService studioService;
 
-    public MusicBand toEntityFromDto(MusicBandRequestDto dto) {
+    @Transactional(readOnly = true)
+    public MusicBand toEntityFromDto(MusicBandRequestCreateDto dto) {
         if (isCombinationInfoAboutNestedObjectsDtoIncorrect(
-            dto.getCoordinates(), dto.getCoordinatesId(),
-            dto.getBestAlbum(), dto.getBestAlbumId(),
-            dto.getStudio(), dto.getStudioId()
+            dto.getCoordinates(),
+            dto.getBestAlbum(),
+            dto.getStudio(),
+            dto.getCoordinatesId(),
+            dto.getBestAlbumId(),
+            dto.getStudioId()
         )) {
             throw new IncorrectDtoInRequestException("Ошибка в комбинации в информации о вложенных объектов");
         }
-        Coordinates coordinates = extractCoordinatesEntityFromMusicBandDto(
+        Coordinates coordinates = extractAndCreateCoordinatesEntityFromMusicBandDto(
             dto.getCoordinates(),
             dto.getCoordinatesId()
         );
@@ -59,10 +64,40 @@ public class MusicBandMapper {
             .build();
     }
 
+    public MusicBandResponseDto toDtoFromEntity(MusicBand entity) {
+        return MusicBandResponseDto.builder()
+            .id(entity.getId())
+            .name(entity.getName())
+            .coordinates(
+                CoordinatesMapper.toDtoFromEntity(
+                    entity.getCoordinates()
+                )
+            )
+            .creationDate(entity.getCreationDate())
+            .genre(entity.getGenre())
+            .numberOfParticipants(entity.getNumberOfParticipants())
+            .singlesCount(entity.getSinglesCount())
+            .description(entity.getDescription())
+            .bestAlbum(
+                (entity.getBestAlbum() == null) ? null :
+                    AlbumMapper.toDtoFromEntity(entity.getBestAlbum())
+            )
+            .albumsCount(entity.getAlbumsCount())
+            .establishmentDate(entity.getEstablishmentDate())
+            .studio(
+                (entity.getStudio() == null) ? null :
+                    StudioMapper.toDtoFromEntity(entity.getStudio())
+            )
+            .build();
+    }
+
     private boolean isCombinationInfoAboutNestedObjectsDtoIncorrect(
-        CoordinatesRequestDto coordinates, Long coordinatesId,
-        AlbumRequestDto bestAlbum, Long bestAlbumId,
-        StudioRequestDto studio, Long studioId
+        CoordinatesRequestCreateDto coordinates,
+        AlbumRequestCreateDto bestAlbum,
+        StudioRequestCreateDto studio,
+        Long coordinatesId,
+        Long bestAlbumId,
+        Long studioId
     ) {
         return (
             (coordinates == null && coordinatesId == null) ||
@@ -72,43 +107,35 @@ public class MusicBandMapper {
         );
     }
 
-    private Coordinates extractCoordinatesEntityFromMusicBandDto(
-        CoordinatesRequestDto dto,
+    private Coordinates extractAndCreateCoordinatesEntityFromMusicBandDto(
+        CoordinatesRequestCreateDto dto,
         Long id
     ) {
         if (dto != null) {
-            return CoordinatesMapper.toEntityFromDto(dto);
+            return coordinatesService.create(dto);
         }
         return coordinatesService.findById(id);
     }
 
     private Album extractBestAlbumEntityFromMusicBandDto(
-        AlbumRequestDto dto,
+        AlbumRequestCreateDto dto,
         Long id
     ) {
         if (dto == null && id == null) return null;
         if (dto != null) {
-            return AlbumMapper.toEntityFromDto(dto);
+            return albumService.create(dto);
         }
         return albumService.findById(id);
     }
 
     private Studio extractStudioEntityFromMusicBandDto(
-        StudioRequestDto dto,
+        StudioRequestCreateDto dto,
         Long id
     ) {
         if (dto == null && id == null) return null;
         if (dto != null) {
-            return StudioMapper.toEntityFromDto(dto);
+            return studioService.create(dto);
         }
         return studioService.findById(id);
-    }
-
-    public MusicBandResponseDto toDtoFromEntity(MusicBand entity) {
-        return MusicBandResponseDto.builder()
-            .id(entity.getId())
-            .name(entity.getName())
-            .address(entity.getAddress())
-            .build();
     }
 }

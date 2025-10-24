@@ -1,4 +1,4 @@
-package lab.is.dto.requests;
+package lab.is.dto.requests.coordinates;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CoordinatesRequestDto {
+public class CoordinatesRequestUpdateDto {
     private Float x;
     private int y;
 }
