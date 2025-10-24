@@ -1,12 +1,31 @@
 package lab.is;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+@SpringBootTest
+@Testcontainers
+@AutoConfigureMockMvc
 class StudioControllerTest extends SpringBootApplicationTest {
+    @Autowired
+    MockMvc mockMvc;
+
+    @BeforeEach
+    void init() {
+        setupDb();
+    }
+
     protected String getEndpointGettingEntityById() {
         return "/api/v1/studios/{id}";
     }
@@ -15,9 +34,9 @@ class StudioControllerTest extends SpringBootApplicationTest {
     void createStudio_ReturnsResponseWithStatusCreated() throws Exception {
         setupDb();
         final Long id = 3L;
-
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/studios")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -29,11 +48,13 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isCreated()
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -52,29 +73,33 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/studios")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
-                    "name": "created studio",
-                    "address": "created studio address"
+                    "name": null,
+                    "address": null
                 }
                 """
             );
 
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isBadRequest()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
     void getStudioById_ReturnsResponseWithStatusOk() throws Exception {
         setupDb();
         final Long id = 1L;
+
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -89,8 +114,9 @@ class StudioControllerTest extends SpringBootApplicationTest {
     @Test
     void getStudioById_ReturnsResponseWithStatusNotFound() throws Exception {
         setupDb();
+
         final Long id = 100L;
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -100,6 +126,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/studios/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -111,11 +138,13 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isNoContent()
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -131,8 +160,10 @@ class StudioControllerTest extends SpringBootApplicationTest {
     void putStudioById_ReturnsResponseWithStatusNotFound() throws Exception {
         setupDb();
         final Long id = 100L;
+
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/studios/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -144,19 +175,22 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isNotFound()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
     void putStudioById_ReturnsResponseWithStatusBadRequest() throws Exception {
         setupDb();
         final Long id = 1L;
+
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/studios/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -168,11 +202,13 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isBadRequest()
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -188,37 +224,42 @@ class StudioControllerTest extends SpringBootApplicationTest {
     void deleteStudioById_ReturnsResponseWithStatusNoContent() throws Exception {
         setupDb();
         final Long id = 2L;
+
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .delete("/api/v1/studios/{id}", id);
 
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isNoContent()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
     void deleteStudioById_ReturnsResponseWithStatusNotFound() throws Exception {
         setupDb();
         final Long id = 100L;
+
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .delete("/api/v1/studios/{id}", id);
 
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isNotFound()
             );
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
     void deleteStudioById_ReturnsResponseWithStatusConflict() throws Exception {
         setupDb();
         final Long id = 1L;
+
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .delete("/api/v1/studios/{id}", id);
 
@@ -228,6 +269,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
                 status().isConflict()
             );
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {

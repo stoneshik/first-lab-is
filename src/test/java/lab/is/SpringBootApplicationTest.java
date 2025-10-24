@@ -1,25 +1,22 @@
 package lab.is;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -29,41 +26,40 @@ import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.MusicGenre;
 import lab.is.bd.entities.Studio;
 
-@SpringBootTest
-@Testcontainers
-@AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class SpringBootApplicationTest {
     @Container
     @ServiceConnection
     static final PostgreSQLContainer<?> postgresSqlContainer =
         new PostgreSQLContainer<>("postgres:16.4")
-            .withReuse(true)
+            .withReuse(false)
             .withDatabaseName("is_service");
 
     @Autowired
-    protected MockMvc mockMvc;
+    private PlatformTransactionManager transactionManager;
 
     @PersistenceContext
     protected EntityManager entityManager;
 
-    @AfterAll
-    void stopContainers() {
-        if (postgresSqlContainer.isRunning()) {
-            postgresSqlContainer.stop();
-        }
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     protected void setupDb() {
-        clearDb();
-        createEntitiesInDb();
-        forceWritingToDb();
+        new TransactionTemplate(transactionManager).execute(
+            status -> {
+                clearDb();
+                createEntitiesInDb();
+                forceWritingToDb();
+                return null;
+            }
+        );
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     protected void setupEmptyDb() {
-        clearDb();
+        new TransactionTemplate(transactionManager).execute(
+            status -> {
+                clearDb();
+                forceWritingToDb();
+                return null;
+            }
+        );
     }
 
     private void clearDb() {
@@ -77,7 +73,7 @@ abstract class SpringBootApplicationTest {
             RESTART IDENTITY CASCADE
             """
         ).executeUpdate();
-        entityManager.clear(); // сбросить кэш при необходимости
+        entityManager.clear();
     }
 
     protected void createEntitiesInDb() {
@@ -153,8 +149,6 @@ abstract class SpringBootApplicationTest {
             .build();
         entityManager.persist(musicBand1);
         entityManager.persist(musicBand2);
-
-        entityManager.flush();
     }
 
     private void forceWritingToDb() {
@@ -163,6 +157,7 @@ abstract class SpringBootApplicationTest {
     }
 
     protected void checkEntityExistByIdAndEqualExpectedJsonString(
+        MockMvc mockMvc,
         Long id,
         String expectedJsonString
     ) throws Exception {
@@ -171,6 +166,7 @@ abstract class SpringBootApplicationTest {
             .get(endpoint, id);
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isOk(),
                 content().contentTypeCompatibleWith("application/json"),
@@ -178,12 +174,13 @@ abstract class SpringBootApplicationTest {
             );
     }
 
-    protected void checkEntityNotExistsById(Long id) throws Exception {
+    protected void checkEntityNotExistsById(MockMvc mockMvc, Long id) throws Exception {
         final String endpoint = getEndpointGettingEntityById();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .get(endpoint, id);
         mockMvc
             .perform(requestBuilder)
+            .andDo(print())
             .andExpectAll(
                 status().isNotFound()
             );

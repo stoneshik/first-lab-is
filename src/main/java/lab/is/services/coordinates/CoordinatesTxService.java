@@ -14,7 +14,7 @@ class CoordinatesTxService {
     private final CoordinatesRepository coordinatesRepository;
 
     @Transactional(readOnly = true)
-    Coordinates findByIdReturnsEntity(Long id) {
+    public Coordinates findByIdReturnsEntity(Long id) {
         return coordinatesRepository.findById(id)
                 .orElseThrow(
                     () ->

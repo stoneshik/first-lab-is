@@ -14,7 +14,7 @@ class StudioTxService {
     private final StudioRepository studioRepository;
 
     @Transactional(readOnly = true)
-    Studio findByIdReturnsEntity(Long id) {
+    public Studio findByIdReturnsEntity(Long id) {
         return studioRepository.findById(id)
                 .orElseThrow(
                     () ->

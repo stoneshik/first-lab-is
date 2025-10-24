@@ -14,7 +14,7 @@ public class MusicBandTxService {
     private final MusicBandRepository musicBandRepository;
 
     @Transactional(readOnly = true)
-    MusicBand findByIdReturnsEntity(Long id) {
+    public MusicBand findByIdReturnsEntity(Long id) {
         return musicBandRepository.findById(id)
                 .orElseThrow(
                     () ->

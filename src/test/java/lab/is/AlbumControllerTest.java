@@ -3,10 +3,22 @@ package lab.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+@SpringBootTest
+@Testcontainers
+@AutoConfigureMockMvc
 class AlbumControllerTest extends SpringBootApplicationTest {
+    @Autowired
+    MockMvc mockMvc;
+
     protected String getEndpointGettingEntityById() {
         return "/api/v1/albums/{id}";
     }
@@ -18,6 +30,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/albums")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -34,6 +47,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -52,6 +66,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-albums")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -67,7 +82,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
                 status().isBadRequest()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -75,6 +90,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
         setupDb();
         final Long id = 1L;
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -90,7 +106,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
     void getAlbumById_ReturnsResponseWithStatusNotFound() throws Exception {
         setupDb();
         final Long id = 100L;
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -100,6 +116,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/albums/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -116,6 +133,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -133,6 +151,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
         final Long id = 100L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/albums/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -148,7 +167,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
                 status().isNotFound()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -157,6 +176,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
         final Long id = 1L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/albums/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -173,6 +193,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -197,7 +218,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
                 status().isNoContent()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -212,7 +233,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isNotFound()
             );
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -229,6 +250,7 @@ class AlbumControllerTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {

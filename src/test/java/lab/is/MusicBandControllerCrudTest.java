@@ -4,10 +4,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+@SpringBootTest
+@Testcontainers
+@AutoConfigureMockMvc
 class MusicBandControllerCrudTest extends SpringBootApplicationTest {
+    @Autowired
+    MockMvc mockMvc;
+
     protected String getEndpointGettingEntityById() {
         return "/api/v1/music-bands/{id}";
     }
@@ -17,6 +29,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         setupDb();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -77,6 +90,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -112,7 +126,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isBadRequest()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -120,6 +134,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         setupDb();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -171,6 +186,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/api/v1/music-bands")
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -197,7 +213,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNotFound()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -205,6 +221,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         setupDb();
         final Long id = 1L;
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -241,7 +258,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     void getMusicBandById_ReturnsResponseWithStatusNotFound() throws Exception {
         setupDb();
         final Long id = 100L;
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -251,6 +268,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/music-bands/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -281,6 +299,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -311,6 +330,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         final Long id = 100L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/music-bands/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -340,7 +360,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNotFound()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
@@ -349,6 +369,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         final Long id = 1L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/music-bands/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -385,6 +406,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -423,6 +445,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         final Long id = 1L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/music-bands/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -450,6 +473,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -488,6 +512,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         final Long id = 1L;
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .put("/api/v1/music-bands/{id}", id)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
                 {
@@ -515,6 +540,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
+            mockMvc,
             id,
             """
             {
@@ -560,7 +586,7 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
                 status().isNoContent()
             );
 
-        checkEntityNotExistsById(id);
+        checkEntityNotExistsById(mockMvc, id);
     }
 
     @Test
