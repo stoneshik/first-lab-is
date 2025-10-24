@@ -24,7 +24,7 @@ public class MusicBandToEntityFromDtoCreateRequest {
     private final CoordinatesService coordinatesService;
     private final StudioService studioService;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public MusicBand toEntityFromDto(MusicBandRequestCreateDto dto) {
         if (isCombinationInfoAboutNestedObjectsDtoIncorrect(
             dto.getCoordinates(),
