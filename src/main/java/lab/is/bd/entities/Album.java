@@ -1,7 +1,7 @@
 package lab.is.bd.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -57,7 +57,7 @@ public class Album {
         cascade = {},
         orphanRemoval = false
     )
-    private List<MusicBand> musicBands = new ArrayList<>();
+    private Set<MusicBand> musicBands = new HashSet<>();
 
     public void addMusicBand(MusicBand band) {
         if (band == null) return;

@@ -27,7 +27,7 @@ public class MusicBandToEntityFromDtoUpdateRequest {
     @Transactional
     public MusicBand toEntityFromDto(
         MusicBandRequestUpdateDto dto,
-        MusicBand foundedMusicBand
+        MusicBand foundMusicBand
     ) {
         if (isCombinationInfoAboutNestedObjectsDtoIncorrect(
             dto.getCoordinates(),
@@ -39,22 +39,22 @@ public class MusicBandToEntityFromDtoUpdateRequest {
         )) {
             throw new IncorrectDtoInRequestException("Ошибка в комбинации в информации о вложенных объектов");
         }
-        Coordinates coordinates = findOrCreateCoordinatesEntityByMusicBandDto(
+        Coordinates coordinates = createOrFindCoordinatesEntityByMusicBandDto(
+            foundMusicBand,
             dto.getCoordinates(),
-            dto.getCoordinatesId(),
-            foundedMusicBand
+            dto.getCoordinatesId()
         );
-        Album bestAlbum = findOrCreateBestAlbumEntityByMusicBandDto(
+        Album bestAlbum = createOrFindBestAlbumEntityByMusicBandDto(
+            foundMusicBand,
             dto.getBestAlbum(),
-            dto.getBestAlbumId(),
-            foundedMusicBand
+            dto.getBestAlbumId()
         );
-        Studio studio = findOrCreateStudioEntityByMusicBandDto(
+        Studio studio = createOrFindStudioEntityByMusicBandDto(
+            foundMusicBand,
             dto.getStudio(),
-            dto.getStudioId(),
-            foundedMusicBand
+            dto.getStudioId()
         );
-        return foundedMusicBand.toBuilder()
+        return foundMusicBand.toBuilder()
             .name(dto.getName())
             .coordinates(coordinates)
             .creationDate(dto.getCreationDate())
@@ -85,68 +85,158 @@ public class MusicBandToEntityFromDtoUpdateRequest {
         );
     }
 
-    private Coordinates findOrCreateCoordinatesEntityByMusicBandDto(
-        CoordinatesRequestUpdateDto dto,
-        Long id,
-        MusicBand foundedMusicBand
+    private Coordinates createOrFindCoordinatesEntityByMusicBandDto(
+        MusicBand foundMusicBand,
+        CoordinatesRequestUpdateDto coordinatesDto,
+        Long coordinatesId
     ) {
-        if (dto != null) {
-            Coordinates coordinates = coordinatesService.create(
-                dto.getX(),
-                dto.getY()
-            );
-            coordinates.removeMusicBand(foundedMusicBand);
-            return coordinates;
+        if (coordinatesDto != null) {
+            return createCoordinatesEntityByMusicBandDto(foundMusicBand, coordinatesDto);
         }
-        Coordinates coordinates = coordinatesService.findByIdReturnsEntity(id);
-        Long foundedMusicBandCoordinatesId = foundedMusicBand.getCoordinates().getId();
-        if (!foundedMusicBandCoordinatesId.equals(coordinates.getId())) {
-            coordinates.removeMusicBand(foundedMusicBand);
-        }
-        return coordinates;
+        return findCoordinatesEntityByMusicBandDto(foundMusicBand, coordinatesId);
     }
 
-    private Album findOrCreateBestAlbumEntityByMusicBandDto(
-        AlbumRequestUpdateDto dto,
-        Long id,
-        MusicBand foundedMusicBand
+    private Album createOrFindBestAlbumEntityByMusicBandDto(
+        MusicBand foundMusicBand,
+        AlbumRequestUpdateDto albumDto,
+        Long albumId
     ) {
-        if (dto == null && id == null) return null;
-        if (dto != null) {
-            Album album = albumService.create(
-                dto.getName(),
-                dto.getLength()
-            );
-            album.removeMusicBand(foundedMusicBand);
-            return album;
+        if (albumDto == null && albumId == null) return null;
+        if (albumDto != null) {
+            return createBestAlbumEntityByMusicBandDto(foundMusicBand, albumDto);
         }
-        Album album = albumService.findByIdReturnsEntity(id);
-        Long foundedMusicBandBestAlbumId = foundedMusicBand.getBestAlbum().getId();
-        if (!foundedMusicBandBestAlbumId.equals(album.getId())) {
-            album.removeMusicBand(foundedMusicBand);
-        }
-        return album;
+        return findBestAlbumEntityByMusicBandDto(foundMusicBand, albumId);
     }
 
-    private Studio findOrCreateStudioEntityByMusicBandDto(
-        StudioRequestUpdateDto dto,
-        Long id,
-        MusicBand foundedMusicBand
+    private Studio createOrFindStudioEntityByMusicBandDto(
+        MusicBand foundMusicBand,
+        StudioRequestUpdateDto studioDto,
+        Long studioId
     ) {
-        if (dto == null && id == null) return null;
-        if (dto != null) {
-            Studio studio = studioService.create(
-                dto.getName(),
-                dto.getAddress()
+        if (studioDto == null && studioId == null) return null;
+        if (studioDto != null) {
+            return createStudioEntityByMusicBandDto(foundMusicBand, studioDto);
+        }
+        return findStudioEntityByMusicBandDto(foundMusicBand, studioId);
+    }
+
+    private Coordinates createCoordinatesEntityByMusicBandDto(
+        MusicBand foundMusicBand,
+        CoordinatesRequestUpdateDto coordinatesDto
+    ) {
+        Coordinates createdCoordinates = coordinatesService.create(
+            coordinatesDto.getX(),
+            coordinatesDto.getY()
+        );
+        updateOneToManyConnection(
+            foundMusicBand,
+            foundMusicBand.getCoordinates(),
+            createdCoordinates
+        );
+        return createdCoordinates;
+    }
+
+    private Coordinates findCoordinatesEntityByMusicBandDto(MusicBand foundMusicBand, Long coordinatesId) {
+        Coordinates foundMusicBandCoordinates = foundMusicBand.getCoordinates();
+        Long foundMusicBandCoordinatesId = foundMusicBandCoordinates.getId();
+
+        Coordinates foundCoordinates = coordinatesService.findByIdReturnsEntity(coordinatesId);
+        if (!foundMusicBandCoordinatesId.equals(foundCoordinates.getId())) {
+            updateOneToManyConnection(
+                foundMusicBand,
+                foundMusicBandCoordinates,
+                foundCoordinates
             );
-            studio.removeMusicBand(foundedMusicBand);
-            return studio;
         }
-        Studio studio = studioService.findByIdReturnsEntity(id);
-        Long foundedMusicBandStudioId = foundedMusicBand.getStudio().getId();
-        if (!foundedMusicBandStudioId.equals(studio.getId())) {
-            studio.removeMusicBand(foundedMusicBand);
+        return foundCoordinates;
+    }
+
+    private Album createBestAlbumEntityByMusicBandDto(
+        MusicBand foundMusicBand,
+        AlbumRequestUpdateDto albumDto
+    ) {
+        Album createdAlbum = albumService.create(
+            albumDto.getName(),
+            albumDto.getLength()
+        );
+        updateOneToManyConnection(
+            foundMusicBand,
+            foundMusicBand.getBestAlbum(),
+            createdAlbum
+        );
+        return createdAlbum;
+    }
+
+    private Album findBestAlbumEntityByMusicBandDto(MusicBand foundMusicBand, Long albumId) {
+        Album foundMusicBandBestAlbum = foundMusicBand.getBestAlbum();
+        Long foundMusicBandAlbumId = foundMusicBandBestAlbum.getId();
+
+        Album foundAlbum = albumService.findByIdReturnsEntity(albumId);
+        if (!foundMusicBandAlbumId.equals(foundAlbum.getId())) {
+            updateOneToManyConnection(
+                foundMusicBand,
+                foundMusicBandBestAlbum,
+                foundAlbum
+            );
         }
-        return studio;
+        return foundAlbum;
+    }
+
+    private Studio createStudioEntityByMusicBandDto(
+        MusicBand foundMusicBand,
+        StudioRequestUpdateDto studioDto
+    ) {
+        Studio createdStudio = studioService.create(
+            studioDto.getName(),
+            studioDto.getAddress()
+        );
+        updateOneToManyConnection(
+            foundMusicBand,
+            foundMusicBand.getStudio(),
+            createdStudio
+        );
+        return createdStudio;
+    }
+
+    private Studio findStudioEntityByMusicBandDto(MusicBand foundMusicBand, Long studioId) {
+        Studio foundMusicBandStudio = foundMusicBand.getStudio();
+        Long foundMusicBandStudioId = foundMusicBandStudio.getId();
+
+        Studio foundStudio = studioService.findByIdReturnsEntity(studioId);
+        if (!foundMusicBandStudioId.equals(foundStudio.getId())) {
+            updateOneToManyConnection(
+                foundMusicBand,
+                foundMusicBandStudio,
+                foundStudio
+            );
+        }
+        return foundStudio;
+    }
+
+    private void updateOneToManyConnection(
+        MusicBand musicBand,
+        Coordinates oldCoordinates,
+        Coordinates newCoordinates
+    ) {
+        oldCoordinates.removeMusicBand(musicBand);
+        newCoordinates.addMusicBand(musicBand);
+    }
+
+    private void updateOneToManyConnection(
+        MusicBand musicBand,
+        Album oldAlbum,
+        Album newAlbum
+    ) {
+        oldAlbum.removeMusicBand(musicBand);
+        newAlbum.addMusicBand(musicBand);
+    }
+
+    private void updateOneToManyConnection(
+        MusicBand musicBand,
+        Studio oldStudio,
+        Studio newStudio
+    ) {
+        oldStudio.removeMusicBand(musicBand);
+        newStudio.addMusicBand(musicBand);
     }
 }

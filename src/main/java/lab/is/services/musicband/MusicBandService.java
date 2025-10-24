@@ -3,6 +3,7 @@ package lab.is.services.musicband;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import lab.is.bd.entities.Coordinates;
 import lab.is.bd.entities.MusicBand;
 import lab.is.dto.requests.musicband.MusicBandRequestCreateDto;
 import lab.is.dto.requests.musicband.MusicBandRequestUpdateDto;
@@ -50,6 +51,8 @@ public class MusicBandService {
     @Transactional
     public void delete(Long id) {
         MusicBand musicBand = musicBandTxService.findByIdReturnsEntity(id);
+        Coordinates coordinates = musicBand.getCoordinates();
+        coordinates.removeMusicBand(musicBand);
         musicBandRepository.delete(musicBand);
         musicBandRepository.flush();
     }
