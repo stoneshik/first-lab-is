@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lab.is.dto.requests.studio.StudioRequestCreateDto;
 import lab.is.dto.requests.studio.StudioRequestUpdateDto;
 import lab.is.dto.responses.StudioResponseDto;
-import lab.is.services.StudioService;
+import lab.is.services.studio.StudioService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,7 +33,10 @@ public class StudioController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody StudioRequestCreateDto dto) {
-        Long createdId = studioService.create(dto).getId();
+        Long createdId = studioService.create(
+            dto.getName(),
+            dto.getAddress()
+        ).getId();
         URI location = URI.create(URI_RESOURCE + "/" + createdId);
         return ResponseEntity.created(location).build();
     }

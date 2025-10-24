@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lab.is.dto.requests.album.AlbumRequestCreateDto;
 import lab.is.dto.requests.album.AlbumRequestUpdateDto;
 import lab.is.dto.responses.AlbumResponseDto;
-import lab.is.services.AlbumService;
+import lab.is.services.album.AlbumService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,7 +33,10 @@ public class AlbumController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody AlbumRequestCreateDto dto) {
-        Long createdId = albumService.create(dto).getId();
+        Long createdId = albumService.create(
+            dto.getName(),
+            dto.getLength()
+        ).getId();
         URI location = URI.create(URI_RESOURCE + "/" + createdId);
         return ResponseEntity.created(location).build();
     }

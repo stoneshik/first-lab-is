@@ -1,4 +1,4 @@
-package lab.is.util;
+package lab.is.util.musicband;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,16 +11,15 @@ import lab.is.dto.requests.album.AlbumRequestCreateDto;
 import lab.is.dto.requests.coordinates.CoordinatesRequestCreateDto;
 import lab.is.dto.requests.musicband.MusicBandRequestCreateDto;
 import lab.is.dto.requests.studio.StudioRequestCreateDto;
-import lab.is.dto.responses.MusicBandResponseDto;
 import lab.is.exceptions.IncorrectDtoInRequestException;
-import lab.is.services.AlbumService;
-import lab.is.services.CoordinatesService;
-import lab.is.services.StudioService;
+import lab.is.services.album.AlbumService;
+import lab.is.services.coordinates.CoordinatesService;
+import lab.is.services.studio.StudioService;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MusicBandMapper {
+public class MusicBandToEntityFromDtoCreateRequest {
     private final AlbumService albumService;
     private final CoordinatesService coordinatesService;
     private final StudioService studioService;
@@ -37,15 +36,15 @@ public class MusicBandMapper {
         )) {
             throw new IncorrectDtoInRequestException("Ошибка в комбинации в информации о вложенных объектов");
         }
-        Coordinates coordinates = extractAndCreateCoordinatesEntityFromMusicBandDto(
+        Coordinates coordinates = extractOrCreateCoordinatesEntityFromMusicBandDto(
             dto.getCoordinates(),
             dto.getCoordinatesId()
         );
-        Album bestAlbum = extractBestAlbumEntityFromMusicBandDto(
+        Album bestAlbum = extractOrCreateBestAlbumEntityFromMusicBandDto(
             dto.getBestAlbum(),
             dto.getBestAlbumId()
         );
-        Studio studio = extractStudioEntityFromMusicBandDto(
+        Studio studio = extractOrCreateStudioEntityFromMusicBandDto(
             dto.getStudio(),
             dto.getStudioId()
         );
@@ -61,33 +60,6 @@ public class MusicBandMapper {
             .albumsCount(dto.getAlbumsCount())
             .establishmentDate(dto.getEstablishmentDate())
             .studio(studio)
-            .build();
-    }
-
-    public MusicBandResponseDto toDtoFromEntity(MusicBand entity) {
-        return MusicBandResponseDto.builder()
-            .id(entity.getId())
-            .name(entity.getName())
-            .coordinates(
-                CoordinatesMapper.toDtoFromEntity(
-                    entity.getCoordinates()
-                )
-            )
-            .creationDate(entity.getCreationDate())
-            .genre(entity.getGenre())
-            .numberOfParticipants(entity.getNumberOfParticipants())
-            .singlesCount(entity.getSinglesCount())
-            .description(entity.getDescription())
-            .bestAlbum(
-                (entity.getBestAlbum() == null) ? null :
-                    AlbumMapper.toDtoFromEntity(entity.getBestAlbum())
-            )
-            .albumsCount(entity.getAlbumsCount())
-            .establishmentDate(entity.getEstablishmentDate())
-            .studio(
-                (entity.getStudio() == null) ? null :
-                    StudioMapper.toDtoFromEntity(entity.getStudio())
-            )
             .build();
     }
 
@@ -107,35 +79,44 @@ public class MusicBandMapper {
         );
     }
 
-    private Coordinates extractAndCreateCoordinatesEntityFromMusicBandDto(
+    private Coordinates extractOrCreateCoordinatesEntityFromMusicBandDto(
         CoordinatesRequestCreateDto dto,
         Long id
     ) {
         if (dto != null) {
-            return coordinatesService.create(dto);
+            return coordinatesService.create(
+                dto.getX(),
+                dto.getY()
+            );
         }
-        return coordinatesService.findById(id);
+        return coordinatesService.findByIdReturnsEntity(id);
     }
 
-    private Album extractBestAlbumEntityFromMusicBandDto(
+    private Album extractOrCreateBestAlbumEntityFromMusicBandDto(
         AlbumRequestCreateDto dto,
         Long id
     ) {
         if (dto == null && id == null) return null;
         if (dto != null) {
-            return albumService.create(dto);
+            return albumService.create(
+                dto.getName(),
+                dto.getLength()
+            );
         }
-        return albumService.findById(id);
+        return albumService.findByIdReturnsEntity(id);
     }
 
-    private Studio extractStudioEntityFromMusicBandDto(
+    private Studio extractOrCreateStudioEntityFromMusicBandDto(
         StudioRequestCreateDto dto,
         Long id
     ) {
         if (dto == null && id == null) return null;
         if (dto != null) {
-            return studioService.create(dto);
+            return studioService.create(
+                dto.getName(),
+                dto.getAddress()
+            );
         }
-        return studioService.findById(id);
+        return studioService.findByIdReturnsEntity(id);
     }
 }

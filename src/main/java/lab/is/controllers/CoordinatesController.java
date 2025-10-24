@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lab.is.dto.requests.coordinates.CoordinatesRequestCreateDto;
 import lab.is.dto.requests.coordinates.CoordinatesRequestUpdateDto;
 import lab.is.dto.responses.CoordinatesResponseDto;
-import lab.is.services.CoordinatesService;
+import lab.is.services.coordinates.CoordinatesService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -33,7 +33,10 @@ public class CoordinatesController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody CoordinatesRequestCreateDto dto) {
-        Long createdId = coordinatesService.create(dto).getId();
+        Long createdId = coordinatesService.create(
+            dto.getX(),
+            dto.getY()
+        ).getId();
         URI location = URI.create(URI_RESOURCE + "/" + createdId);
         return ResponseEntity.created(location).build();
     }

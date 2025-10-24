@@ -1,14 +1,12 @@
-package lab.is.services;
+package lab.is.services.coordinates;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lab.is.bd.entities.Coordinates;
-import lab.is.dto.requests.coordinates.CoordinatesRequestCreateDto;
 import lab.is.dto.requests.coordinates.CoordinatesRequestUpdateDto;
 import lab.is.dto.responses.CoordinatesResponseDto;
 import lab.is.exceptions.NestedObjectIsUsedException;
-import lab.is.exceptions.NestedObjectNotFoundException;
 import lab.is.repositories.CoordinatesRepository;
 import lab.is.util.CoordinatesMapper;
 import lombok.RequiredArgsConstructor;
@@ -17,16 +15,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CoordinatesService {
     private final CoordinatesRepository coordinatesRepository;
+    private final CoordinatesTxService coordinatesTxService;
 
     @Transactional(readOnly = true)
     public CoordinatesResponseDto findById(Long id) {
-        Coordinates coordinates = findByIdReturnsEntity(id);
+        Coordinates coordinates = coordinatesTxService.findByIdReturnsEntity(id);
         return CoordinatesMapper.toDtoFromEntity(coordinates);
     }
 
     @Transactional
-    public Coordinates create(CoordinatesRequestCreateDto dto) {
-        Coordinates coordinates = CoordinatesMapper.toEntityFromDto(dto);
+    public Coordinates create(Float x, int y) {
+        Coordinates coordinates = Coordinates.builder()
+            .x(x)
+            .y(y)
+            .build();
         Coordinates savedCoordinates = coordinatesRepository.save(coordinates);
         coordinatesRepository.flush();
         return savedCoordinates;
@@ -34,7 +36,7 @@ public class CoordinatesService {
 
     @Transactional
     public Coordinates update(long id, CoordinatesRequestUpdateDto dto) {
-        Coordinates coordinates = findByIdReturnsEntity(id);
+        Coordinates coordinates = coordinatesTxService.findByIdReturnsEntity(id);
         Coordinates updatedCoordinates = coordinates.toBuilder()
             .x(dto.getX())
             .y(dto.getY())
@@ -46,7 +48,7 @@ public class CoordinatesService {
 
     @Transactional
     public void delete(Long id) {
-        Coordinates coordinates = findByIdReturnsEntity(id);
+        Coordinates coordinates = coordinatesTxService.findByIdReturnsEntity(id);
         if (isUsedNestedObject(coordinates)) {
             throw new NestedObjectIsUsedException(
                 String.format(
@@ -58,14 +60,8 @@ public class CoordinatesService {
         coordinatesRepository.delete(coordinates);
     }
 
-    private Coordinates findByIdReturnsEntity(Long id) {
-        return coordinatesRepository.findById(id)
-                .orElseThrow(
-                    () ->
-                    new NestedObjectNotFoundException(
-                        String.format("Координаты с id: %s не найдены", id)
-                    )
-                );
+    public Coordinates findByIdReturnsEntity(Long id) {
+        return coordinatesTxService.findByIdReturnsEntity(id);
     }
 
     private boolean isUsedNestedObject(Coordinates coordinates) {
