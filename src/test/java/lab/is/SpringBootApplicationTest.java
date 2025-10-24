@@ -1,6 +1,5 @@
 package lab.is;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -166,7 +165,6 @@ abstract class SpringBootApplicationTest {
             .get(endpoint, id);
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isOk(),
                 content().contentTypeCompatibleWith("application/json"),
@@ -180,7 +178,6 @@ abstract class SpringBootApplicationTest {
             .get(endpoint, id);
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isNotFound()
             );

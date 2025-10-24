@@ -12,3 +12,8 @@ spring:
   jpa:
     generate-ddl: true
     hibernate.ddl-auto: "update"
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: "auto"

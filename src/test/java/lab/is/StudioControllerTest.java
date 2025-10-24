@@ -1,6 +1,5 @@
 package lab.is;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -48,7 +47,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isCreated()
             );
@@ -85,7 +83,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isBadRequest()
             );
@@ -138,7 +135,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isNoContent()
             );
@@ -175,7 +171,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isNotFound()
             );
@@ -202,7 +197,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isBadRequest()
             );
@@ -230,7 +224,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isNoContent()
             );
@@ -248,7 +241,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
 
         mockMvc
             .perform(requestBuilder)
-            .andDo(print())
             .andExpectAll(
                 status().isNotFound()
             );

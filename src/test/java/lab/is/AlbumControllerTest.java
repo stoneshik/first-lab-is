@@ -62,10 +62,10 @@ class AlbumControllerTest extends SpringBootApplicationTest {
     @Test
     void createAlbum_ReturnsResponseWithStatusBadRequest() throws Exception {
         setupDb();
-        final Long id = 3L;
+        final Long id = 4L;
 
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .post("/api/v1/music-albums")
+            .post("/api/v1/albums")
             .contentType(MediaType.APPLICATION_JSON)
             .content(
                 """
