@@ -19,10 +19,10 @@ import lab.is.services.musicband.MusicBandService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/music-band")
+@RequestMapping("/api/v1/music-bands")
 @RequiredArgsConstructor
 public class MusicBandController {
-    private static final String URI_RESOURCE = "/api/v1/music-band";
+    private static final String URI_RESOURCE = "/api/v1/music-bands";
     private final MusicBandService musicBandService;
 
     @GetMapping("/{id}")

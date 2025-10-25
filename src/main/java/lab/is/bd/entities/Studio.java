@@ -40,12 +40,12 @@ public class Studio {
     private Long id;
 
     @ToString.Include
-    @NotNull
+    @NotNull(message = "{not-null}")
     @Column(name = "name", nullable = false)
     private String name;
 
     @ToString.Include
-    @NotNull
+    @NotNull(message = "{not-null}")
     @Column(name = "address", nullable = false)
     private String address;
 

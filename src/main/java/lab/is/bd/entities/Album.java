@@ -41,12 +41,12 @@ public class Album {
     private Long id;
 
     @ToString.Include
-    @NotBlank
+    @NotBlank(message = "{not-blank}")
     @Column(name = "name", nullable = false)
     private String name;
 
     @ToString.Include
-    @Positive
+    @Positive(message = "{positive}")
     @Column(name = "length", nullable = false)
     private int length;
 

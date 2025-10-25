@@ -40,7 +40,7 @@ public class Coordinates {
     private Long id;
 
     @ToString.Include
-    @NotNull
+    @NotNull(message = "{not-null}")
     @Column(name = "x", nullable = false)
     private Float x;
 

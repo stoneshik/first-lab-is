@@ -48,7 +48,7 @@ public class MusicBand {
     private Long id;
 
     @ToString.Include
-    @NotBlank
+    @NotBlank(message = "{not-blank}")
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -62,7 +62,7 @@ public class MusicBand {
     private Coordinates coordinates;
 
     @ToString.Include
-    @NotNull
+    @NotNull(message = "{not-null}")
     @Column(name = "creation_date", nullable = false, updatable = false)
     private LocalDateTime creationDate;
 
@@ -72,13 +72,13 @@ public class MusicBand {
     private MusicGenre genre;
 
     @ToString.Include
-    @Positive
+    @Positive(message = "{positive}")
     @Column(name = "number_of_participants")
     private Long numberOfParticipants;
 
     @ToString.Include
-    @NotNull
-    @Positive
+    @NotNull(message = "{not-null}")
+    @Positive(message = "{positive}")
     @Column(name = "singles_count", nullable = false)
     private Long singlesCount;
 
@@ -94,12 +94,12 @@ public class MusicBand {
     private Album bestAlbum;
 
     @ToString.Include
-    @Positive
+    @Positive(message = "{positive}")
     @Column(name = "albums_count", nullable = false)
     private long albumsCount;
 
     @ToString.Include
-    @NotNull
+    @NotNull(message = "{not-null}")
     @Column(name = "establishment_date", nullable = false)
     private LocalDate establishmentDate;
 
