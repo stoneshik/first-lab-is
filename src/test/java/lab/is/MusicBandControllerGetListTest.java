@@ -15,7 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
-class MusicBandControllerGetListTest extends SpringBootApplicationTest {
+class MusicBandControllerGetListTest extends AbstractMusicBandTest {
     @Autowired
     MockMvc mockMvc;
 
@@ -149,6 +149,8 @@ class MusicBandControllerGetListTest extends SpringBootApplicationTest {
             );
     }
 
+    /* не стоит менять на параметризованный тест пока не решена проблема
+     с контекстом при параллельном выполнении тестов */
     @Test
     void getListMusicBand_FilterByName_ReturnsMatchingBandsWithStatusOk() throws Exception {
         setupDb();

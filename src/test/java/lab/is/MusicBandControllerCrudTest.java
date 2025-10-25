@@ -3,6 +3,8 @@ package lab.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,10 +15,16 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import lab.is.bd.entities.Album;
+import lab.is.bd.entities.Coordinates;
+import lab.is.bd.entities.MusicBand;
+import lab.is.bd.entities.MusicGenre;
+import lab.is.bd.entities.Studio;
+
 @SpringBootTest
 @Testcontainers
 @AutoConfigureMockMvc
-class MusicBandControllerCrudTest extends SpringBootApplicationTest {
+class MusicBandControllerCrudTest extends AbstractMusicBandTest {
     @Autowired
     MockMvc mockMvc;
 
@@ -62,25 +70,43 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         mockMvc
             .perform(requestBuilder)
             .andExpectAll(
-                status().isCreated(),
-                jsonPath("$.id").value(3L),
-                jsonPath("$.name").value("created music band"),
-                jsonPath("$.coordinates.id").value(4L),
-                jsonPath("$.coordinates.x").value(123456.0f),
-                jsonPath("$.coordinates.y").value(2147483647),
-                jsonPath("$.genre").value("BRIT_POP"),
-                jsonPath("$.numberOfParticipants").value(9223372036854775807L),
-                jsonPath("$.singlesCount").value(9223372036854775807L),
-                jsonPath("$.description").value(""),
-                jsonPath("$.bestAlbum.id").value(4L),
-                jsonPath("$.bestAlbum.name").value("new album"),
-                jsonPath("$.bestAlbum.length").value(2147483647),
-                jsonPath("$.albumsCount").value(9223372036854775807L),
-                jsonPath("$.establishmentDate").value("2021-01-01"),
-                jsonPath("$.studio.id").value(3L),
-                jsonPath("$.studio.name").value(""),
-                jsonPath("$.studio.address").value("")
+                status().isCreated()
             );
+
+        checkEntityExistByIdAndEqualExpectedMusicBandEntity(
+            mockMvc,
+            MusicBand.builder()
+                .id(3L)
+                .name("created music band")
+                .coordinates(
+                    Coordinates.builder()
+                        .id(4L)
+                        .x(123456.0f)
+                        .y(2147483647)
+                        .build()
+                )
+                .genre(MusicGenre.BRIT_POP)
+                .numberOfParticipants(9223372036854775807L)
+                .singlesCount(9223372036854775807L)
+                .description("")
+                .bestAlbum(
+                    Album.builder()
+                        .id(4L)
+                        .name("new album")
+                        .length(2147483647)
+                        .build()
+                )
+                .albumsCount(9223372036854775807L)
+                .establishmentDate(LocalDate.of(2021, 1, 1))
+                .studio(
+                    Studio.builder()
+                        .id(3L)
+                        .name("")
+                        .address("")
+                        .build()
+                )
+                .build()
+        );
     }
 
     @Test
@@ -158,25 +184,43 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
         mockMvc
             .perform(requestBuilder)
             .andExpectAll(
-                status().isCreated(),
-                jsonPath("$.id").value(3L),
-                jsonPath("$.name").value("created music band"),
-                jsonPath("$.coordinates.id").value(1L),
-                jsonPath("$.coordinates.x").value(1.0f),
-                jsonPath("$.coordinates.y").value(2),
-                jsonPath("$.genre").value("BRIT_POP"),
-                jsonPath("$.numberOfParticipants").value(9223372036854775807L),
-                jsonPath("$.singlesCount").value(9223372036854775807L),
-                jsonPath("$.description").value(""),
-                jsonPath("$.bestAlbum.id").value(2L),
-                jsonPath("$.bestAlbum.name").value("second album"),
-                jsonPath("$.bestAlbum.length").value(1000),
-                jsonPath("$.albumsCount").value(9223372036854775807L),
-                jsonPath("$.establishmentDate").value("2021-01-01"),
-                jsonPath("$.studio.id").value(1L),
-                jsonPath("$.studio.name").value("first studio"),
-                jsonPath("$.studio.address").value("first studio")
+                status().isCreated()
             );
+
+        checkEntityExistByIdAndEqualExpectedMusicBandEntity(
+            mockMvc,
+            MusicBand.builder()
+                .id(3L)
+                .name("created music band")
+                .coordinates(
+                    Coordinates.builder()
+                        .id(1L)
+                        .x(1.0f)
+                        .y(2)
+                        .build()
+                )
+                .genre(MusicGenre.BRIT_POP)
+                .numberOfParticipants(9223372036854775807L)
+                .singlesCount(9223372036854775807L)
+                .description("")
+                .bestAlbum(
+                    Album.builder()
+                        .id(2L)
+                        .name("second album")
+                        .length(1000)
+                        .build()
+                )
+                .albumsCount(9223372036854775807L)
+                .establishmentDate(LocalDate.of(2021, 1, 1))
+                .studio(
+                    Studio.builder()
+                        .id(1L)
+                        .name("first studio")
+                        .address("first studio address")
+                        .build()
+                )
+                .build()
+        );
     }
 
     @Test
@@ -219,38 +263,39 @@ class MusicBandControllerCrudTest extends SpringBootApplicationTest {
     @Test
     void getMusicBandById_ReturnsResponseWithStatusOk() throws Exception {
         setupDb();
-        final Long id = 1L;
-        checkEntityExistByIdAndEqualExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             mockMvc,
-            id,
-            """
-            {
-                "id": 1,
-                "name": "first band",
-                "coordinates": {
-                    "id": 1,
-                    "x": 1.0,
-                    "y": 2
-                },
-                "creationDate": "2024-08-03T19:09:40.936657",
-                "genre": "PROGRESSIVE_ROCK",
-                "numberOfParticipants": 4,
-                "singlesCount": 5,
-                "description": "first band description",
-                "bestAlbum": {
-                    "id": 1,
-                    "name": "first album",
-                    "length": 12
-                },
-                "albumsCount": 2,
-                "establishmentDate": "2024-08-03",
-                "studio": {
-                    "id": 1,
-                    "name": "first studio",
-                    "address": "first studio address"
-                }
-            }
-            """
+            MusicBand.builder()
+                .id(1L)
+                .name("first band")
+                .coordinates(
+                    Coordinates.builder()
+                        .id(1L)
+                        .x(1.0f)
+                        .y(2)
+                        .build()
+                )
+                .genre(MusicGenre.PROGRESSIVE_ROCK)
+                .numberOfParticipants(4L)
+                .singlesCount(5L)
+                .description("first band description")
+                .bestAlbum(
+                    Album.builder()
+                        .id(1L)
+                        .name("first album")
+                        .length(12)
+                        .build()
+                )
+                .albumsCount(2L)
+                .establishmentDate(LocalDate.of(2024, 8, 3))
+                .studio(
+                    Studio.builder()
+                        .id(1L)
+                        .name("first studio")
+                        .address("first studio address")
+                        .build()
+                )
+                .build()
         );
     }
 
