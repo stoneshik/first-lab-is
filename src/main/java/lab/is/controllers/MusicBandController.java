@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lab.is.dto.requests.musicband.MusicBandRequestCreateDto;
 import lab.is.dto.requests.musicband.MusicBandRequestUpdateDto;
 import lab.is.dto.responses.MusicBandResponseDto;
@@ -32,14 +33,17 @@ public class MusicBandController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody MusicBandRequestCreateDto dto) {
+    public ResponseEntity<Void> create(@RequestBody @Valid MusicBandRequestCreateDto dto) {
         Long createdId = musicBandService.create(dto).getId();
         URI location = URI.create(URI_RESOURCE + "/" + createdId);
         return ResponseEntity.created(location).build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody MusicBandRequestUpdateDto dto) {
+    public ResponseEntity<Void> update(
+        @PathVariable Long id,
+        @RequestBody @Valid MusicBandRequestUpdateDto dto
+    ) {
         musicBandService.update(id, dto);
         return ResponseEntity.noContent().build();
     }

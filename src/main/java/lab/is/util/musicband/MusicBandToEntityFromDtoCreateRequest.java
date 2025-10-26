@@ -51,7 +51,6 @@ public class MusicBandToEntityFromDtoCreateRequest {
         return MusicBand.builder()
             .name(dto.getName())
             .coordinates(coordinates)
-            .creationDate(dto.getCreationDate())
             .genre(dto.getGenre())
             .numberOfParticipants(dto.getNumberOfParticipants())
             .singlesCount(dto.getSinglesCount())

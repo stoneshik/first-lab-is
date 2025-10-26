@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lab.is.dto.requests.coordinates.CoordinatesRequestCreateDto;
 import lab.is.dto.requests.coordinates.CoordinatesRequestUpdateDto;
 import lab.is.dto.responses.CoordinatesResponseDto;
@@ -32,7 +33,7 @@ public class CoordinatesController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody CoordinatesRequestCreateDto dto) {
+    public ResponseEntity<Void> create(@RequestBody @Valid CoordinatesRequestCreateDto dto) {
         Long createdId = coordinatesService.create(
             dto.getX(),
             dto.getY()
@@ -42,7 +43,10 @@ public class CoordinatesController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody CoordinatesRequestUpdateDto dto) {
+    public ResponseEntity<Void> update(
+        @PathVariable Long id,
+        @RequestBody @Valid CoordinatesRequestUpdateDto dto
+    ) {
         coordinatesService.update(id, dto);
         return ResponseEntity.noContent().build();
     }

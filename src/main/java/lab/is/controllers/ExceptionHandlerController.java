@@ -1,11 +1,14 @@
 package lab.is.controllers;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -56,17 +59,35 @@ public class ExceptionHandlerController {
             .build();
     }
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public ErrorMessageResponseDto handleException(MethodArgumentNotValidException e) {
+        List<FieldError> fieldErrors = e.getFieldErrors();
+        Map<String, String> errors = new HashMap<>();
+        fieldErrors.forEach(fieldError ->
+            errors.put(
+                fieldError.getField(),
+                fieldError.getDefaultMessage()
+            )
+        );
+        return ErrorMessageResponseDto.builder()
+            .timestamp(new Date())
+            .message("Передан объект неправильного формата")
+            .violations(errors)
+            .build();
+    }
+
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public ErrorMessageResponseDto handleException(ConstraintViolationException e) {
         Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
-        Map<String, String> errors = violations.stream()
-            .collect(
-                Collectors.toMap(
-                    v -> v.getPropertyPath().toString(),
-                    ConstraintViolation::getMessage
-                )
-            );
+        Map<String, String> errors = new HashMap<>();
+        violations.forEach(violation ->
+            errors.put(
+                violation.getPropertyPath().toString(),
+                violation.getMessage()
+            )
+        );
         return ErrorMessageResponseDto.builder()
             .timestamp(new Date())
             .message("Передан объект неправильного формата")

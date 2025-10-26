@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lab.is.dto.requests.album.AlbumRequestCreateDto;
 import lab.is.dto.requests.album.AlbumRequestUpdateDto;
 import lab.is.dto.responses.AlbumResponseDto;
@@ -32,7 +33,7 @@ public class AlbumController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> create(@RequestBody AlbumRequestCreateDto dto) {
+    public ResponseEntity<Void> create(@RequestBody @Valid AlbumRequestCreateDto dto) {
         Long createdId = albumService.create(
             dto.getName(),
             dto.getLength()
@@ -42,7 +43,10 @@ public class AlbumController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody AlbumRequestUpdateDto dto) {
+    public ResponseEntity<Void> update(
+        @PathVariable Long id,
+        @RequestBody @Valid AlbumRequestUpdateDto dto
+    ) {
         albumService.update(id, dto);
         return ResponseEntity.noContent().build();
     }
