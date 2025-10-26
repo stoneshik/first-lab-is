@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class WrapperListMusicBandResponseDto {
     private Long totalElements;
-    private Long totalPages;
-    private Long currentPage;
-    private Long pageSize;
+    private Integer totalPages;
+    private Integer currentPage;
+    private Integer pageSize;
     private List<MusicBandResponseDto> musicBands;
 }

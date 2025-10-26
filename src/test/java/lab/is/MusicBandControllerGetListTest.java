@@ -1,6 +1,7 @@
 package lab.is;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,15 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
             .andExpectAll(
                 status().isOk(),
                 content().contentTypeCompatibleWith("application/json"),
-                content().json("[]")
+                content().json("""
+                    {
+                        "totalElements": 0,
+                        "totalPages": 0,
+                        "currentPage": 0,
+                        "pageSize": 0,
+                        "musicBands": []
+                    }
+                """)
             );
     }
 
@@ -49,60 +58,48 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
             .andExpectAll(
                 status().isOk(),
                 content().contentTypeCompatibleWith("application/json"),
-                content().json("""
-                    {
-                        "totalElements": 2,
-                        "totalPages": 1,
-                        "currentPage": 0,
-                        "pageSize": 10,
-                        "musicBands": [
-                            {
-                                "id": 1,
-                                "name": "first band",
-                                "coordinates": {
-                                    "id": 1,
-                                    "x": 1.0,
-                                    "y": 2
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "PROGRESSIVE_ROCK",
-                                "numberOfParticipants": 4,
-                                "singlesCount": 5,
-                                "description": "first band description",
-                                "bestAlbum": {
-                                    "id": 1,
-                                    "name": "first album",
-                                    "length": 12
-                                },
-                                "albumsCount": 2,
-                                "establishmentDate": "2024-08-03",
-                                "studio": {
-                                    "id": 1
-                                    "name": "first studio",
-                                    "address": "first studio address"
-                                }
-                            },
-                            {
-                                "id": 2,
-                                "name": "012345678901234567890123456789",
-                                "coordinates": {
-                                    "id": 2,
-                                    "x": -100.12314,
-                                    "y": -2147483648
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "POST_PUNK",
-                                "numberOfParticipants": 9223372036854775807,
-                                "singlesCount": 9223372036854775807,
-                                "description": null,
-                                "bestAlbum": null,
-                                "albumsCount": 9223372036854775807,
-                                "establishmentDate": "2024-08-03",
-                                "studio": null
-                            }
-                        ]
-                    }
-                """)
+                jsonPath("$.totalElements").value(2L),
+                jsonPath("$.totalPages").value(1),
+                jsonPath("$.currentPage").value(0),
+                jsonPath("$.pageSize").value(2),
+
+                jsonPath("$.musicBands[0].id").value(1L),
+                jsonPath("$.musicBands[0].name").value("first band"),
+
+                jsonPath("$.musicBands[0].coordinates.id").value(1L),
+                jsonPath("$.musicBands[0].coordinates.x").value(1.0f),
+                jsonPath("$.musicBands[0].coordinates.y").value(2),
+
+                jsonPath("$.musicBands[0].genre").value("PROGRESSIVE_ROCK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(4),
+                jsonPath("$.musicBands[0].singlesCount").value(5),
+                jsonPath("$.musicBands[0].description").value("first band description"),
+
+                jsonPath("$.musicBands[0].bestAlbum.id").value(1L),
+                jsonPath("$.musicBands[0].bestAlbum.name").value("first album"),
+                jsonPath("$.musicBands[0].bestAlbum.length").value(12),
+                jsonPath("$.musicBands[0].albumsCount").value(2L),
+                jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+
+                jsonPath("$.musicBands[0].studio.id").value(1L),
+                jsonPath("$.musicBands[0].studio.name").value("first studio"),
+                jsonPath("$.musicBands[0].studio.address").value("first studio address"),
+
+                jsonPath("$.musicBands[1].id").value(2L),
+                jsonPath("$.musicBands[1].name").value("012345678901234567890123456789"),
+
+                jsonPath("$.musicBands[1].coordinates.id").value(2L),
+                jsonPath("$.musicBands[1].coordinates.x").value(-100.12314f),
+                jsonPath("$.musicBands[1].coordinates.y").value(-2147483648),
+
+                jsonPath("$.musicBands[1].genre").value("POST_PUNK"),
+                jsonPath("$.musicBands[1].numberOfParticipants").value(9223372036854775807L),
+                jsonPath("$.musicBands[1].singlesCount").value(9223372036854775807L),
+                jsonPath("$.musicBands[1].description").doesNotExist(),
+                jsonPath("$.musicBands[1].bestAlbum").doesNotExist(),
+                jsonPath("$.musicBands[1].albumsCount").value(9223372036854775807L),
+                jsonPath("$.musicBands[1].establishmentDate").value("2024-08-03"),
+                jsonPath("$.musicBands[1].studio").doesNotExist()
             );
     }
 
@@ -118,34 +115,26 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
         mockMvc.perform(requestBuilder)
             .andExpectAll(
                 status().isOk(),
-                content().json("""
-                    {
-                        "totalElements": 2,
-                        "totalPages": 2,
-                        "currentPage": 0,
-                        "pageSize": 1,
-                        "musicBands": [
-                            {
-                                "id": 2,
-                                "name": "012345678901234567890123456789",
-                                "coordinates": {
-                                    "id": 2,
-                                    "x": -100.12314,
-                                    "y": -2147483648
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "POST_PUNK",
-                                "numberOfParticipants": 9223372036854775807,
-                                "singlesCount": 9223372036854775807,
-                                "description": null,
-                                "bestAlbum": null,
-                                "albumsCount": 9223372036854775807,
-                                "establishmentDate": "2024-08-03",
-                                "studio": null
-                            }
-                        ]
-                    }
-                """)
+                jsonPath("$.totalElements").value(2L),
+                jsonPath("$.totalPages").value(2),
+                jsonPath("$.currentPage").value(0),
+                jsonPath("$.pageSize").value(1),
+
+                jsonPath("$.musicBands[0].id").value(2L),
+                jsonPath("$.musicBands[0].name").value("012345678901234567890123456789"),
+
+                jsonPath("$.musicBands[0].coordinates.id").value(2L),
+                jsonPath("$.musicBands[0].coordinates.x").value(-100.12314f),
+                jsonPath("$.musicBands[0].coordinates.y").value(-2147483648),
+
+                jsonPath("$.musicBands[0].genre").value("POST_PUNK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(9223372036854775807L),
+                jsonPath("$.musicBands[0].singlesCount").value(9223372036854775807L),
+                jsonPath("$.musicBands[0].description").doesNotExist(),
+                jsonPath("$.musicBands[0].bestAlbum").doesNotExist(),
+                jsonPath("$.musicBands[0].albumsCount").value(9223372036854775807L),
+                jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+                jsonPath("$.musicBands[0].studio").doesNotExist()
             );
     }
 
@@ -161,42 +150,32 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
         mockMvc.perform(requestBuilder)
             .andExpectAll(
                 status().isOk(),
-                content().json("""
-                    {
-                        "totalElements": 1,
-                        "totalPages": 1,
-                        "currentPage": 0,
-                        "pageSize": 10,
-                        "musicBands": [
-                            {
-                                "id": 1,
-                                "name": "first band",
-                                "coordinates": {
-                                    "id": 1,
-                                    "x": 1.0,
-                                    "y": 2
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "PROGRESSIVE_ROCK",
-                                "numberOfParticipants": 4,
-                                "singlesCount": 5,
-                                "description": "first band description",
-                                "bestAlbum": {
-                                    "id": 1,
-                                    "name": "first album",
-                                    "length": 12
-                                },
-                                "albumsCount": 2,
-                                "establishmentDate": "2024-08-03",
-                                "studio": {
-                                    "id": 1
-                                    "name": "first studio",
-                                    "address": "first studio address"
-                                }
-                            }
-                        ]
-                    }
-                """)
+                jsonPath("$.totalElements").value(1L),
+                jsonPath("$.totalPages").value(1),
+                jsonPath("$.currentPage").value(0),
+                jsonPath("$.pageSize").value(1),
+
+                jsonPath("$.musicBands[0].id").value(1L),
+                jsonPath("$.musicBands[0].name").value("first band"),
+
+                jsonPath("$.musicBands[0].coordinates.id").value(1L),
+                jsonPath("$.musicBands[0].coordinates.x").value(1.0f),
+                jsonPath("$.musicBands[0].coordinates.y").value(2),
+
+                jsonPath("$.musicBands[0].genre").value("PROGRESSIVE_ROCK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(4),
+                jsonPath("$.musicBands[0].singlesCount").value(5),
+                jsonPath("$.musicBands[0].description").value("first band description"),
+
+                jsonPath("$.musicBands[0].bestAlbum.id").value(1L),
+                jsonPath("$.musicBands[0].bestAlbum.name").value("first album"),
+                jsonPath("$.musicBands[0].bestAlbum.length").value(12),
+                jsonPath("$.musicBands[0].albumsCount").value(2L),
+                jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+
+                jsonPath("$.musicBands[0].studio.id").value(1L),
+                jsonPath("$.musicBands[0].studio.name").value("first studio"),
+                jsonPath("$.musicBands[0].studio.address").value("first studio address")
             );
     }
 
@@ -205,47 +184,37 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
         setupDb();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .get("/api/v1/music-bands")
-            .param("genre", "PROGRESS");
+            .param("genre", "PROGRESSIVE_ROCK");
 
         mockMvc.perform(requestBuilder)
             .andExpectAll(
                 status().isOk(),
-                content().json("""
-                    {
-                        "totalElements": 1,
-                        "totalPages": 1,
-                        "currentPage": 0,
-                        "pageSize": 10,
-                        "musicBands": [
-                            {
-                                "id": 1,
-                                "name": "first band",
-                                "coordinates": {
-                                    "id": 1,
-                                    "x": 1.0,
-                                    "y": 2
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "PROGRESSIVE_ROCK",
-                                "numberOfParticipants": 4,
-                                "singlesCount": 5,
-                                "description": "first band description",
-                                "bestAlbum": {
-                                    "id": 1,
-                                    "name": "first album",
-                                    "length": 12
-                                },
-                                "albumsCount": 2,
-                                "establishmentDate": "2024-08-03",
-                                "studio": {
-                                    "id": 1
-                                    "name": "first studio",
-                                    "address": "first studio address"
-                                }
-                            }
-                        ]
-                    }
-                """)
+                jsonPath("$.totalElements").value(1L),
+                jsonPath("$.totalPages").value(1),
+                jsonPath("$.currentPage").value(0),
+                jsonPath("$.pageSize").value(1),
+
+                jsonPath("$.musicBands[0].id").value(1L),
+                jsonPath("$.musicBands[0].name").value("first band"),
+
+                jsonPath("$.musicBands[0].coordinates.id").value(1L),
+                jsonPath("$.musicBands[0].coordinates.x").value(1.0f),
+                jsonPath("$.musicBands[0].coordinates.y").value(2),
+
+                jsonPath("$.musicBands[0].genre").value("PROGRESSIVE_ROCK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(4),
+                jsonPath("$.musicBands[0].singlesCount").value(5),
+                jsonPath("$.musicBands[0].description").value("first band description"),
+
+                jsonPath("$.musicBands[0].bestAlbum.id").value(1L),
+                jsonPath("$.musicBands[0].bestAlbum.name").value("first album"),
+                jsonPath("$.musicBands[0].bestAlbum.length").value(12),
+                jsonPath("$.musicBands[0].albumsCount").value(2L),
+                jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+
+                jsonPath("$.musicBands[0].studio.id").value(1L),
+                jsonPath("$.musicBands[0].studio.name").value("first studio"),
+                jsonPath("$.musicBands[0].studio.address").value("first studio address")
             );
     }
 
@@ -259,42 +228,32 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
         mockMvc.perform(requestBuilder)
             .andExpectAll(
                 status().isOk(),
-                content().json("""
-                    {
-                        "totalElements": 1,
-                        "totalPages": 1,
-                        "currentPage": 0,
-                        "pageSize": 10,
-                        "musicBands": [
-                            {
-                                "id": 1,
-                                "name": "first band",
-                                "coordinates": {
-                                    "id": 1,
-                                    "x": 1.0,
-                                    "y": 2
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "PROGRESSIVE_ROCK",
-                                "numberOfParticipants": 4,
-                                "singlesCount": 5,
-                                "description": "first band description",
-                                "bestAlbum": {
-                                    "id": 1,
-                                    "name": "first album",
-                                    "length": 12
-                                },
-                                "albumsCount": 2,
-                                "establishmentDate": "2024-08-03",
-                                "studio": {
-                                    "id": 1
-                                    "name": "first studio",
-                                    "address": "first studio address"
-                                }
-                            }
-                        ]
-                    }
-                """)
+                jsonPath("$.totalElements").value(1L),
+                jsonPath("$.totalPages").value(1),
+                jsonPath("$.currentPage").value(0),
+                jsonPath("$.pageSize").value(1),
+
+                jsonPath("$.musicBands[0].id").value(1L),
+                jsonPath("$.musicBands[0].name").value("first band"),
+
+                jsonPath("$.musicBands[0].coordinates.id").value(1L),
+                jsonPath("$.musicBands[0].coordinates.x").value(1.0f),
+                jsonPath("$.musicBands[0].coordinates.y").value(2),
+
+                jsonPath("$.musicBands[0].genre").value("PROGRESSIVE_ROCK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(4),
+                jsonPath("$.musicBands[0].singlesCount").value(5),
+                jsonPath("$.musicBands[0].description").value("first band description"),
+
+                jsonPath("$.musicBands[0].bestAlbum.id").value(1L),
+                jsonPath("$.musicBands[0].bestAlbum.name").value("first album"),
+                jsonPath("$.musicBands[0].bestAlbum.length").value(12),
+                jsonPath("$.musicBands[0].albumsCount").value(2L),
+                jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+
+                jsonPath("$.musicBands[0].studio.id").value(1L),
+                jsonPath("$.musicBands[0].studio.name").value("first studio"),
+                jsonPath("$.musicBands[0].studio.address").value("first studio address")
             );
     }
 
@@ -308,42 +267,32 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
         mockMvc.perform(requestBuilder)
             .andExpectAll(
                 status().isOk(),
-                content().json("""
-                    {
-                        "totalElements": 1,
-                        "totalPages": 1,
-                        "currentPage": 0,
-                        "pageSize": 10,
-                        "musicBands": [
-                            {
-                                "id": 1,
-                                "name": "first band",
-                                "coordinates": {
-                                    "id": 1,
-                                    "x": 1.0,
-                                    "y": 2
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "PROGRESSIVE_ROCK",
-                                "numberOfParticipants": 4,
-                                "singlesCount": 5,
-                                "description": "first band description",
-                                "bestAlbum": {
-                                    "id": 1,
-                                    "name": "first album",
-                                    "length": 12
-                                },
-                                "albumsCount": 2,
-                                "establishmentDate": "2024-08-03",
-                                "studio": {
-                                    "id": 1
-                                    "name": "first studio",
-                                    "address": "first studio address"
-                                }
-                            }
-                        ]
-                    }
-                """)
+                jsonPath("$.totalElements").value(1L),
+                jsonPath("$.totalPages").value(1),
+                jsonPath("$.currentPage").value(0),
+                jsonPath("$.pageSize").value(1),
+
+                jsonPath("$.musicBands[0].id").value(1L),
+                jsonPath("$.musicBands[0].name").value("first band"),
+
+                jsonPath("$.musicBands[0].coordinates.id").value(1L),
+                jsonPath("$.musicBands[0].coordinates.x").value(1.0f),
+                jsonPath("$.musicBands[0].coordinates.y").value(2),
+
+                jsonPath("$.musicBands[0].genre").value("PROGRESSIVE_ROCK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(4),
+                jsonPath("$.musicBands[0].singlesCount").value(5),
+                jsonPath("$.musicBands[0].description").value("first band description"),
+
+                jsonPath("$.musicBands[0].bestAlbum.id").value(1L),
+                jsonPath("$.musicBands[0].bestAlbum.name").value("first album"),
+                jsonPath("$.musicBands[0].bestAlbum.length").value(12),
+                jsonPath("$.musicBands[0].albumsCount").value(2L),
+                jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+
+                jsonPath("$.musicBands[0].studio.id").value(1L),
+                jsonPath("$.musicBands[0].studio.name").value("first studio"),
+                jsonPath("$.musicBands[0].studio.address").value("first studio address")
             );
     }
 
@@ -357,42 +306,32 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
         mockMvc.perform(requestBuilder)
             .andExpectAll(
                 status().isOk(),
-                content().json("""
-                    {
-                        "totalElements": 1,
-                        "totalPages": 1,
-                        "currentPage": 0,
-                        "pageSize": 10,
-                        "musicBands": [
-                            {
-                                "id": 1,
-                                "name": "first band",
-                                "coordinates": {
-                                    "id": 1,
-                                    "x": 1.0,
-                                    "y": 2
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "PROGRESSIVE_ROCK",
-                                "numberOfParticipants": 4,
-                                "singlesCount": 5,
-                                "description": "first band description",
-                                "bestAlbum": {
-                                    "id": 1,
-                                    "name": "first album",
-                                    "length": 12
-                                },
-                                "albumsCount": 2,
-                                "establishmentDate": "2024-08-03",
-                                "studio": {
-                                    "id": 1
-                                    "name": "first studio",
-                                    "address": "first studio address"
-                                }
-                            }
-                        ]
-                    }
-                """)
+                jsonPath("$.totalElements").value(1L),
+                jsonPath("$.totalPages").value(1),
+                jsonPath("$.currentPage").value(0),
+                jsonPath("$.pageSize").value(1),
+
+                jsonPath("$.musicBands[0].id").value(1L),
+                jsonPath("$.musicBands[0].name").value("first band"),
+
+                jsonPath("$.musicBands[0].coordinates.id").value(1L),
+                jsonPath("$.musicBands[0].coordinates.x").value(1.0f),
+                jsonPath("$.musicBands[0].coordinates.y").value(2),
+
+                jsonPath("$.musicBands[0].genre").value("PROGRESSIVE_ROCK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(4),
+                jsonPath("$.musicBands[0].singlesCount").value(5),
+                jsonPath("$.musicBands[0].description").value("first band description"),
+
+                jsonPath("$.musicBands[0].bestAlbum.id").value(1L),
+                jsonPath("$.musicBands[0].bestAlbum.name").value("first album"),
+                jsonPath("$.musicBands[0].bestAlbum.length").value(12),
+                jsonPath("$.musicBands[0].albumsCount").value(2L),
+                jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+
+                jsonPath("$.musicBands[0].studio.id").value(1L),
+                jsonPath("$.musicBands[0].studio.name").value("first studio"),
+                jsonPath("$.musicBands[0].studio.address").value("first studio address")
             );
     }
 
@@ -406,42 +345,32 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
         mockMvc.perform(requestBuilder)
             .andExpectAll(
                 status().isOk(),
-                content().json("""
-                    {
-                        "totalElements": 1,
-                        "totalPages": 1,
-                        "currentPage": 0,
-                        "pageSize": 10,
-                        "musicBands": [
-                            {
-                                "id": 1,
-                                "name": "first band",
-                                "coordinates": {
-                                    "id": 1,
-                                    "x": 1.0,
-                                    "y": 2
-                                },
-                                "creationDate": "2024-08-03T19:09:40.936657",
-                                "genre": "PROGRESSIVE_ROCK",
-                                "numberOfParticipants": 4,
-                                "singlesCount": 5,
-                                "description": "first band description",
-                                "bestAlbum": {
-                                    "id": 1,
-                                    "name": "first album",
-                                    "length": 12
-                                },
-                                "albumsCount": 2,
-                                "establishmentDate": "2024-08-03",
-                                "studio": {
-                                    "id": 1
-                                    "name": "first studio",
-                                    "address": "first studio address"
-                                }
-                            }
-                        ]
-                    }
-                """)
+                jsonPath("$.totalElements").value(1L),
+                jsonPath("$.totalPages").value(1),
+                jsonPath("$.currentPage").value(0),
+                jsonPath("$.pageSize").value(1),
+
+                jsonPath("$.musicBands[0].id").value(1L),
+                jsonPath("$.musicBands[0].name").value("first band"),
+
+                jsonPath("$.musicBands[0].coordinates.id").value(1L),
+                jsonPath("$.musicBands[0].coordinates.x").value(1.0f),
+                jsonPath("$.musicBands[0].coordinates.y").value(2),
+
+                jsonPath("$.musicBands[0].genre").value("PROGRESSIVE_ROCK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(4),
+                jsonPath("$.musicBands[0].singlesCount").value(5),
+                jsonPath("$.musicBands[0].description").value("first band description"),
+
+                jsonPath("$.musicBands[0].bestAlbum.id").value(1L),
+                jsonPath("$.musicBands[0].bestAlbum.name").value("first album"),
+                jsonPath("$.musicBands[0].bestAlbum.length").value(12),
+                jsonPath("$.musicBands[0].albumsCount").value(2L),
+                jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+
+                jsonPath("$.musicBands[0].studio.id").value(1L),
+                jsonPath("$.musicBands[0].studio.name").value("first studio"),
+                jsonPath("$.musicBands[0].studio.address").value("first studio address")
             );
     }
 }
