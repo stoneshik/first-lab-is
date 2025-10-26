@@ -7,7 +7,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -16,7 +15,6 @@ import lab.is.bd.entities.MusicBand;
 
 public abstract class AbstractMusicBandTest extends SpringBootApplicationTest {
     protected void checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-        MockMvc mockMvc,
         MusicBand musicBand
     ) throws Exception {
         final String endpoint = getEndpointGettingEntityById();
@@ -57,10 +55,14 @@ public abstract class AbstractMusicBandTest extends SpringBootApplicationTest {
                 jsonPath("$.studio.address").value(musicBand.getStudio().getAddress())
             ));
         } else {
-            matchers.add(jsonPath("$.studio").doesNotExist());
+            matchers.add(
+                jsonPath("$.studio").doesNotExist()
+            );
         }
 
         mockMvc.perform(requestBuilder)
-            .andExpectAll(matchers.toArray(new ResultMatcher[0]));
+            .andExpectAll(
+                matchers.toArray(new ResultMatcher[0])
+            );
     }
 }

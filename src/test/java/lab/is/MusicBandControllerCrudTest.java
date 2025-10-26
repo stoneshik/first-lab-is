@@ -5,11 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -20,13 +16,8 @@ import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.MusicGenre;
 import lab.is.bd.entities.Studio;
 
-@SpringBootTest
 @Testcontainers
-@AutoConfigureMockMvc
 class MusicBandControllerCrudTest extends AbstractMusicBandTest {
-    @Autowired
-    MockMvc mockMvc;
-
     protected String getEndpointGettingEntityById() {
         return "/api/v1/music-bands/{id}";
     }
@@ -73,7 +64,6 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            mockMvc,
             MusicBand.builder()
                 .id(3L)
                 .name("created music band")
@@ -151,7 +141,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 status().isBadRequest()
             );
 
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -187,7 +177,6 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            mockMvc,
             MusicBand.builder()
                 .id(3L)
                 .name("created music band")
@@ -256,14 +245,13 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 status().isNotFound()
             );
 
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
     void getMusicBandById_ReturnsResponseWithStatusOk() throws Exception {
         setupDb();
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            mockMvc,
             MusicBand.builder()
                 .id(1L)
                 .name("first band")
@@ -302,7 +290,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
     void getMusicBandById_ReturnsResponseWithStatusNotFound() throws Exception {
         setupDb();
         final Long id = 100L;
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -343,7 +331,6 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            mockMvc,
             MusicBand.builder()
                 .id(id)
                 .name("012345678901234567890123456789")
@@ -402,7 +389,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 status().isNotFound()
             );
 
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -448,7 +435,6 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            mockMvc,
             MusicBand.builder()
                 .id(id)
                 .name("first band")
@@ -517,7 +503,6 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            mockMvc,
             MusicBand.builder()
                 .id(id)
                 .name("012345678901234567890123456789")
@@ -586,7 +571,6 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            mockMvc,
             MusicBand.builder()
                 .id(id)
                 .name("first band")
@@ -634,7 +618,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 status().isNoContent()
             );
 
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test

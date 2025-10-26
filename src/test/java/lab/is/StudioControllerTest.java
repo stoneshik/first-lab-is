@@ -3,22 +3,13 @@ package lab.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-@SpringBootTest
 @Testcontainers
-@AutoConfigureMockMvc
 class StudioControllerTest extends SpringBootApplicationTest {
-    @Autowired
-    MockMvc mockMvc;
-
     protected String getEndpointGettingEntityById() {
         return "/api/v1/studios/{id}";
     }
@@ -46,7 +37,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
-            mockMvc,
             id,
             """
             {
@@ -81,7 +71,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
                 status().isBadRequest()
             );
 
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -90,7 +80,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
         final Long id = 1L;
 
         checkEntityExistByIdAndEqualExpectedJsonString(
-            mockMvc,
             id,
             """
             {
@@ -107,7 +96,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
         setupDb();
 
         final Long id = 100L;
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -134,7 +123,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
-            mockMvc,
             id,
             """
             {
@@ -169,7 +157,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
                 status().isNotFound()
             );
 
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -196,7 +184,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
             );
 
         checkEntityExistByIdAndEqualExpectedJsonString(
-            mockMvc,
             id,
             """
             {
@@ -222,7 +209,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
                 status().isNoContent()
             );
 
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -238,7 +225,7 @@ class StudioControllerTest extends SpringBootApplicationTest {
             .andExpectAll(
                 status().isNotFound()
             );
-        checkEntityNotExistsById(mockMvc, id);
+        checkEntityNotExistsById(id);
     }
 
     @Test
@@ -255,7 +242,6 @@ class StudioControllerTest extends SpringBootApplicationTest {
                 status().isConflict()
             );
         checkEntityExistByIdAndEqualExpectedJsonString(
-            mockMvc,
             id,
             """
             {

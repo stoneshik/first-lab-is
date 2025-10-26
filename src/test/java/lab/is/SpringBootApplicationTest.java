@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -26,6 +28,8 @@ import lab.is.bd.entities.MusicGenre;
 import lab.is.bd.entities.Studio;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@SpringBootTest
+@AutoConfigureMockMvc
 abstract class SpringBootApplicationTest {
     @Container
     @ServiceConnection
@@ -35,10 +39,13 @@ abstract class SpringBootApplicationTest {
             .withDatabaseName("is_service");
 
     @Autowired
+    protected MockMvc mockMvc;
+
+    @Autowired
     private PlatformTransactionManager transactionManager;
 
     @PersistenceContext
-    protected EntityManager entityManager;
+    private EntityManager entityManager;
 
     protected void setupDb() {
         new TransactionTemplate(transactionManager).execute(
@@ -156,7 +163,6 @@ abstract class SpringBootApplicationTest {
     }
 
     protected void checkEntityExistByIdAndEqualExpectedJsonString(
-        MockMvc mockMvc,
         Long id,
         String expectedJsonString
     ) throws Exception {
@@ -172,7 +178,7 @@ abstract class SpringBootApplicationTest {
             );
     }
 
-    protected void checkEntityNotExistsById(MockMvc mockMvc, Long id) throws Exception {
+    protected void checkEntityNotExistsById(Long id) throws Exception {
         final String endpoint = getEndpointGettingEntityById();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .get(endpoint, id);
