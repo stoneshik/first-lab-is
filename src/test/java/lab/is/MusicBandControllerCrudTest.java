@@ -1,6 +1,5 @@
 package lab.is;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
@@ -343,29 +342,27 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 status().isNoContent()
             );
 
-        checkEntityExistByIdAndEqualExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             mockMvc,
-            id,
-            """
-            {
-                "id": 1,
-                "name": "012345678901234567890123456789",
-                "coordinates": {
-                    "id": 3,
-                    "x": -100.12314,
-                    "y": -2147483648
-                },
-                "creationDate": "2024-08-03T19:09:40.936657",
-                "genre": "POST_PUNK",
-                "numberOfParticipants": 9223372036854775807,
-                "singlesCount": 9223372036854775807,
-                "description": null,
-                "bestAlbum": null,
-                "albumsCount": 9223372036854775807,
-                "establishmentDate": "2024-08-03",
-                "studio": null
-            }
-            """
+            MusicBand.builder()
+                .id(id)
+                .name("012345678901234567890123456789")
+                .coordinates(
+                    Coordinates.builder()
+                        .id(4L)
+                        .x(-100.12314f)
+                        .y(-2147483648)
+                        .build()
+                )
+                .genre(MusicGenre.POST_PUNK)
+                .numberOfParticipants(9223372036854775807L)
+                .singlesCount(9223372036854775807L)
+                .description(null)
+                .bestAlbum(null)
+                .albumsCount(9223372036854775807L)
+                .establishmentDate(LocalDate.of(2024, 8, 3))
+                .studio(null)
+                .build()
         );
     }
 
@@ -450,37 +447,39 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 status().isBadRequest()
             );
 
-        checkEntityExistByIdAndEqualExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             mockMvc,
-            id,
-            """
-            {
-                "id": 1,
-                "name": "first band",
-                "coordinates": {
-                    "id": 1,
-                    "x": 1.0,
-                    "y": 2
-                },
-                "creationDate": "2024-08-03T19:09:40.936657",
-                "genre": "PROGRESSIVE_ROCK",
-                "numberOfParticipants": 4,
-                "singlesCount": 5,
-                "description": "first band description",
-                "bestAlbum": {
-                    "id": 1,
-                    "name": "first album",
-                    "length": 12
-                },
-                "albumsCount": 2,
-                "establishmentDate": "2024-08-03",
-                "studio": {
-                    "id": 1,
-                    "name": "first studio",
-                    "address": "first studio address"
-                }
-            }
-            """
+            MusicBand.builder()
+                .id(id)
+                .name("first band")
+                .coordinates(
+                    Coordinates.builder()
+                        .id(1L)
+                        .x(1.0f)
+                        .y(2)
+                        .build()
+                )
+                .genre(MusicGenre.PROGRESSIVE_ROCK)
+                .numberOfParticipants(4L)
+                .singlesCount(5L)
+                .description("first band description")
+                .bestAlbum(
+                    Album.builder()
+                        .id(1L)
+                        .name("first album")
+                        .length(12)
+                        .build()
+                )
+                .albumsCount(2L)
+                .establishmentDate(LocalDate.of(2024, 8, 3))
+                .studio(
+                    Studio.builder()
+                        .id(1L)
+                        .name("first studio")
+                        .address("first studio address")
+                        .build()
+                )
+                .build()
         );
     }
 
@@ -517,37 +516,39 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 status().isNoContent()
             );
 
-        checkEntityExistByIdAndEqualExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             mockMvc,
-            id,
-            """
-            {
-                "id": 1,
-                "name": "012345678901234567890123456789",
-                "coordinates": {
-                    "id": 1,
-                    "x": 1.0,
-                    "y": 2
-                },
-                "creationDate": "2024-08-03T19:09:40.936657",
-                "genre": "POST_PUNK",
-                "numberOfParticipants": 9223372036854775807,
-                "singlesCount": 9223372036854775807,
-                "description": null,
-                "bestAlbum": {
-                    "id": 1,
-                    "name": "first album",
-                    "length": 12
-                },
-                "albumsCount": 9223372036854775807,
-                "establishmentDate": "2024-08-03",
-                "studio": {
-                    "id": 1,
-                    "name": "first studio",
-                    "address": "first studio address"
-                }
-            }
-            """
+            MusicBand.builder()
+                .id(id)
+                .name("012345678901234567890123456789")
+                .coordinates(
+                    Coordinates.builder()
+                        .id(1L)
+                        .x(1.0f)
+                        .y(2)
+                        .build()
+                )
+                .genre(MusicGenre.POST_PUNK)
+                .numberOfParticipants(9223372036854775807L)
+                .singlesCount(9223372036854775807L)
+                .description(null)
+                .bestAlbum(
+                    Album.builder()
+                        .id(1L)
+                        .name("first album")
+                        .length(12)
+                        .build()
+                )
+                .albumsCount(9223372036854775807L)
+                .establishmentDate(LocalDate.of(2024, 8, 3))
+                .studio(
+                    Studio.builder()
+                        .id(1L)
+                        .name("first studio")
+                        .address("first studio address")
+                        .build()
+                )
+                .build()
         );
     }
 
@@ -563,7 +564,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 {
                     "name": "012345678901234567890123456789",
                     "coordinates": null,
-                    "coordinatesId": 3,
+                    "coordinatesId": 4,
                     "genre": "POST_PUNK",
                     "numberOfParticipants": 9223372036854775807,
                     "singlesCount": 9223372036854775807,
@@ -584,37 +585,39 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 status().isNotFound()
             );
 
-        checkEntityExistByIdAndEqualExpectedJsonString(
+        checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             mockMvc,
-            id,
-            """
-            {
-                "id": 1,
-                "name": "012345678901234567890123456789",
-                "coordinates": {
-                    "id": 1,
-                    "x": 1.0,
-                    "y": 2
-                },
-                "creationDate": "2024-08-03T19:09:40.936657",
-                "genre": "POST_PUNK",
-                "numberOfParticipants": 9223372036854775807,
-                "singlesCount": 9223372036854775807,
-                "description": null,
-                "bestAlbum": {
-                    "id": 1,
-                    "name": "first album",
-                    "length": 12
-                },
-                "albumsCount": 9223372036854775807,
-                "establishmentDate": "2024-08-03",
-                "studio": {
-                    "id": 1,
-                    "name": "first studio",
-                    "address": "first studio address"
-                }
-            }
-            """
+            MusicBand.builder()
+                .id(id)
+                .name("first band")
+                .coordinates(
+                    Coordinates.builder()
+                        .id(1L)
+                        .x(1.0f)
+                        .y(2)
+                        .build()
+                )
+                .genre(MusicGenre.PROGRESSIVE_ROCK)
+                .numberOfParticipants(4L)
+                .singlesCount(5L)
+                .description("first band description")
+                .bestAlbum(
+                    Album.builder()
+                        .id(1L)
+                        .name("first album")
+                        .length(12)
+                        .build()
+                )
+                .albumsCount(2L)
+                .establishmentDate(LocalDate.of(2024, 8, 3))
+                .studio(
+                    Studio.builder()
+                        .id(1L)
+                        .name("first studio")
+                        .address("first studio address")
+                        .build()
+                )
+                .build()
         );
     }
 
