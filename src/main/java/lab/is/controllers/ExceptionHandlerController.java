@@ -20,6 +20,7 @@ import lab.is.exceptions.IncorrectDtoInRequestException;
 import lab.is.exceptions.NestedObjectIsUsedException;
 import lab.is.exceptions.NestedObjectNotFoundException;
 import lab.is.exceptions.ObjectNotFoundException;
+import lab.is.exceptions.ValueOverflowException;
 
 @RestControllerAdvice
 public class ExceptionHandlerController {
@@ -53,6 +54,15 @@ public class ExceptionHandlerController {
     @ExceptionHandler(NestedObjectIsUsedException.class)
     @ResponseStatus(value = HttpStatus.CONFLICT)
     public ErrorMessageResponseDto handleException(NestedObjectIsUsedException e) {
+        return ErrorMessageResponseDto.builder()
+            .timestamp(new Date())
+            .message(e.getMessage())
+            .build();
+    }
+
+    @ExceptionHandler(ValueOverflowException.class)
+    @ResponseStatus(value = HttpStatus.CONFLICT)
+    public ErrorMessageResponseDto handleException(ValueOverflowException e) {
         return ErrorMessageResponseDto.builder()
             .timestamp(new Date())
             .message(e.getMessage())

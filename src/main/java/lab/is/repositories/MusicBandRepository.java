@@ -1,5 +1,7 @@
 package lab.is.repositories;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -14,6 +16,12 @@ import lab.is.bd.entities.MusicBand;
 
 @Repository
 public interface MusicBandRepository extends JpaRepository<MusicBand, Long>, JpaSpecificationExecutor<MusicBand> {
+    Optional<MusicBand> findFirstByEstablishmentDate(LocalDate establishmentDate);
+
+    Optional<MusicBand> findFirstByOrderByIdAsc();
+
+    List<MusicBand> findByEstablishmentDateAfter(LocalDate date);
+
     @Override
     @EntityGraph(attributePaths = {"coordinates", "bestAlbum", "studio"})
     Page<MusicBand> findAll(Specification<MusicBand> specification, Pageable pageable);

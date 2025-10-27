@@ -18,7 +18,7 @@ import lab.is.bd.entities.MusicGenre;
 import lab.is.bd.entities.Studio;
 
 @Testcontainers
-class MusicBandDomainTest extends AbstractMusicBandTest {
+class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
     protected String getEndpointGettingEntityById() {
         return "/api/v1/music-bands/{id}";
     }
@@ -43,9 +43,9 @@ class MusicBandDomainTest extends AbstractMusicBandTest {
                 .name("012345678901234567890123456789")
                 .coordinates(
                     Coordinates.builder()
-                        .id(1L)
-                        .x(1.0f)
-                        .y(2)
+                        .id(2L)
+                        .x(-100.12314f)
+                        .y(-2147483648)
                         .build()
                 )
                 .genre(MusicGenre.POST_PUNK)
@@ -65,7 +65,7 @@ class MusicBandDomainTest extends AbstractMusicBandTest {
         setupDb();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .delete("/api/v1/music-bands/by-establishment")
-            .param("date", "2024-08-03");
+            .param("date", "1024-08-03");
 
         mockMvc
             .perform(requestBuilder)
@@ -112,9 +112,9 @@ class MusicBandDomainTest extends AbstractMusicBandTest {
                 .name("012345678901234567890123456789")
                 .coordinates(
                     Coordinates.builder()
-                        .id(1L)
-                        .x(1.0f)
-                        .y(2)
+                        .id(2L)
+                        .x(-100.12314f)
+                        .y(-2147483648)
                         .build()
                 )
                 .genre(MusicGenre.POST_PUNK)
@@ -260,7 +260,7 @@ class MusicBandDomainTest extends AbstractMusicBandTest {
                 )
                 .genre(MusicGenre.PROGRESSIVE_ROCK)
                 .numberOfParticipants(4L)
-                .singlesCount(5L)
+                .singlesCount(6L)
                 .description("first band description")
                 .bestAlbum(
                     Album.builder()
