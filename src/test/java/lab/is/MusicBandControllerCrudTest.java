@@ -332,7 +332,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             MusicBand.builder()
-                .id(id)
+                .id(1L)
                 .name("012345678901234567890123456789")
                 .coordinates(
                     Coordinates.builder()
@@ -436,7 +436,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             MusicBand.builder()
-                .id(id)
+                .id(1L)
                 .name("first band")
                 .coordinates(
                     Coordinates.builder()
@@ -504,7 +504,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             MusicBand.builder()
-                .id(id)
+                .id(1L)
                 .name("012345678901234567890123456789")
                 .coordinates(
                     Coordinates.builder()
@@ -572,7 +572,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
             MusicBand.builder()
-                .id(id)
+                .id(1L)
                 .name("first band")
                 .coordinates(
                     Coordinates.builder()

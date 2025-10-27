@@ -4,7 +4,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -130,7 +129,6 @@ abstract class SpringBootApplicationTest {
         MusicBand musicBand1 = MusicBand.builder()
             .name("first band")
             .coordinates(coordinates1)
-            .creationDate(LocalDateTime.of(2024, 8, 3, 19, 9, 40, 936657))
             .genre(MusicGenre.PROGRESSIVE_ROCK)
             .numberOfParticipants(4L)
             .singlesCount(5L)
@@ -143,7 +141,6 @@ abstract class SpringBootApplicationTest {
         MusicBand musicBand2 = MusicBand.builder()
             .name("012345678901234567890123456789")
             .coordinates(coordinates2)
-            .creationDate(LocalDateTime.of(2024, 8, 3, 19, 9, 40, 936657))
             .genre(MusicGenre.POST_PUNK)
             .numberOfParticipants(9223372036854775807L)
             .singlesCount(9223372036854775807L)
