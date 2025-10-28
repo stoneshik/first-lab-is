@@ -15,7 +15,7 @@ import lab.is.bd.entities.MusicBand;
 
 public abstract class AbstractMusicBandTest extends SpringBootApplicationTest {
     protected void checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-        MusicBand musicBand
+        MusicBand musicBand  // TODO переделать в dto
     ) throws Exception {
         final String endpoint = getEndpointGettingEntityById();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders

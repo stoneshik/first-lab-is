@@ -24,6 +24,7 @@ import lab.is.bd.entities.Album;
 import lab.is.bd.entities.Coordinates;
 import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.MusicGenre;
+import lab.is.bd.entities.Nomination;
 import lab.is.bd.entities.Studio;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -152,6 +153,13 @@ abstract class SpringBootApplicationTest {
             .build();
         entityManager.persist(musicBand1);
         entityManager.persist(musicBand2);
+
+        Nomination nomination1 = Nomination.builder()
+            .musicBand(musicBand1)
+            .musicGenre(MusicGenre.PROGRESSIVE_ROCK)
+            .build();
+
+        entityManager.persist(nomination1);
     }
 
     private void forceWritingToDb() {

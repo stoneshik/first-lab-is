@@ -54,7 +54,7 @@ public class MusicBand {
     private String name;
 
     @Valid
-    @NotNull
+    @NotNull(message = "{not-null}")
     @ManyToOne(fetch = FetchType.LAZY, cascade = {})
     @JoinColumn(
         name = "coordinates_id",
