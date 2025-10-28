@@ -13,8 +13,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import lab.is.bd.entities.MusicGenre;
 import lab.is.dto.responses.AlbumResponseDto;
 import lab.is.dto.responses.CoordinatesResponseDto;
-import lab.is.dto.responses.MusicBandResponseDto;
 import lab.is.dto.responses.StudioResponseDto;
+import lab.is.dto.responses.musicband.MusicBandResponseDto;
 
 @Testcontainers
 class MusicBandControllerCrudTest extends AbstractMusicBandTest {

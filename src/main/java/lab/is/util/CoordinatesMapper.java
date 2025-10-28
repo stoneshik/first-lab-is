@@ -1,21 +1,21 @@
 package lab.is.util;
 
 import lab.is.bd.entities.Coordinates;
-import lab.is.dto.requests.coordinates.CoordinatesRequestCreateDto;
-import lab.is.dto.requests.coordinates.CoordinatesRequestUpdateDto;
+import lab.is.dto.requests.coordinates.CoordinatesCreateRequestDto;
+import lab.is.dto.requests.coordinates.CoordinatesUpdateRequestDto;
 import lab.is.dto.responses.CoordinatesResponseDto;
 
 public class CoordinatesMapper {
     private CoordinatesMapper() {}
 
-    public static Coordinates toEntityFromDto(CoordinatesRequestCreateDto dto) {
+    public static Coordinates toEntityFromDto(CoordinatesCreateRequestDto dto) {
         return Coordinates.builder()
             .x(dto.getX())
             .y(dto.getY())
             .build();
     }
 
-    public static Coordinates toEntityFromDto(CoordinatesRequestUpdateDto dto) {
+    public static Coordinates toEntityFromDto(CoordinatesUpdateRequestDto dto) {
         return Coordinates.builder()
             .x(dto.getX())
             .y(dto.getY())

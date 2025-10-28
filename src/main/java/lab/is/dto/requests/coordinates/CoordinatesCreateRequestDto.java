@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CoordinatesRequestUpdateDto {
+public class CoordinatesCreateRequestDto {
     @NotNull(message = "{not-null}")
     private Float x;
 

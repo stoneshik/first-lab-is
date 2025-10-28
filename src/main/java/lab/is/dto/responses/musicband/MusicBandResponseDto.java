@@ -1,9 +1,12 @@
-package lab.is.dto.responses;
+package lab.is.dto.responses.musicband;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lab.is.bd.entities.MusicGenre;
+import lab.is.dto.responses.AlbumResponseDto;
+import lab.is.dto.responses.CoordinatesResponseDto;
+import lab.is.dto.responses.StudioResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

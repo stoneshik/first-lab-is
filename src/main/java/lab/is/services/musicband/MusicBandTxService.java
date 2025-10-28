@@ -17,8 +17,7 @@ public class MusicBandTxService {
     public MusicBand findByIdReturnsEntity(Long id) {
         return musicBandRepository.findById(id)
                 .orElseThrow(
-                    () ->
-                    new NestedObjectNotFoundException(
+                    () -> new NestedObjectNotFoundException(
                         String.format("Музыкальная группа с id: %s не найдена", id)
                     )
                 );

@@ -14,10 +14,10 @@ import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.MusicGenre;
 import lab.is.dto.requests.musicband.MusicBandRequestCreateDto;
 import lab.is.dto.requests.musicband.MusicBandRequestUpdateDto;
-import lab.is.dto.responses.MusicBandResponseDto;
-import lab.is.dto.responses.WrapperListMusicBandResponseDto;
+import lab.is.dto.responses.musicband.MusicBandResponseDto;
+import lab.is.dto.responses.musicband.WrapperListMusicBandResponseDto;
 import lab.is.repositories.MusicBandRepository;
-import lab.is.repositories.specifications.MusicBandSpecifications;
+import lab.is.repositories.specifications.musicband.MusicBandSpecifications;
 import lab.is.util.musicband.MusicBandToDtoFromEntityMapper;
 import lab.is.util.musicband.MusicBandToEntityFromDtoCreateRequest;
 import lab.is.util.musicband.MusicBandToEntityFromDtoUpdateRequest;
@@ -52,9 +52,10 @@ public class MusicBandService {
         specification = specification.and(musicBandSpecifications.studioAddressLike(studioAddress));
 
         Page<MusicBand> page = musicBandRepository.findAll(specification, pageable);
-        List<MusicBandResponseDto> musicBands = new ArrayList<>();
+        List<MusicBandResponseDto> musicBandResponseDtos = new ArrayList<>();
+
         page.forEach(musicBand ->
-            musicBands.add(
+            musicBandResponseDtos.add(
                 MusicBandToDtoFromEntityMapper.toDtoFromEntity(musicBand)
             )
         );
@@ -64,7 +65,7 @@ public class MusicBandService {
             .totalPages(page.getTotalPages())
             .currentPage(page.getNumber())
             .pageSize(page.getNumberOfElements())
-            .musicBands(musicBands)
+            .musicBands(musicBandResponseDtos)
             .build();
     }
 
@@ -103,6 +104,7 @@ public class MusicBandService {
         musicBandRepository.flush();
     }
 
+    @Transactional(readOnly = true)
     public MusicBand findByIdReturnsEntity(Long id) {
         return musicBandTxService.findByIdReturnsEntity(id);
     }

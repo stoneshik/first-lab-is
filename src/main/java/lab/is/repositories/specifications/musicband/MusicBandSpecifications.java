@@ -1,10 +1,11 @@
-package lab.is.repositories.specifications;
+package lab.is.repositories.specifications.musicband;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.MusicGenre;
+import lab.is.repositories.specifications.MySpecification;
 
 @Component
 public final class MusicBandSpecifications extends MySpecification<MusicBand> {
@@ -31,7 +32,7 @@ public final class MusicBandSpecifications extends MySpecification<MusicBand> {
     }
 
     public Specification<MusicBand> bestAlbumNameLike(String fieldValue) {
-        return fieldStringValueFromEntityLike(
+        return fieldStringValueFromEntityWithJoinLike(
             MusicBandFieldNames.BEST_ALBUM,
             MusicBandFieldNames.BEST_ALBUM_NAME,
             fieldValue
@@ -39,7 +40,7 @@ public final class MusicBandSpecifications extends MySpecification<MusicBand> {
     }
 
     public Specification<MusicBand> studioNameLike(String fieldValue) {
-        return fieldStringValueFromEntityLike(
+        return fieldStringValueFromEntityWithJoinLike(
             MusicBandFieldNames.STUDIO,
             MusicBandFieldNames.STUDIO_NAME,
             fieldValue
@@ -47,7 +48,7 @@ public final class MusicBandSpecifications extends MySpecification<MusicBand> {
     }
 
     public Specification<MusicBand> studioAddressLike(String fieldValue) {
-        return fieldStringValueFromEntityLike(
+        return fieldStringValueFromEntityWithJoinLike(
             MusicBandFieldNames.STUDIO,
             MusicBandFieldNames.STUDIO_ADDRESS,
             fieldValue

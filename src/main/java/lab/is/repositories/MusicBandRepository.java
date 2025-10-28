@@ -15,7 +15,8 @@ import org.springframework.stereotype.Repository;
 import lab.is.bd.entities.MusicBand;
 
 @Repository
-public interface MusicBandRepository extends JpaRepository<MusicBand, Long>, JpaSpecificationExecutor<MusicBand> {
+public interface MusicBandRepository extends JpaRepository<MusicBand, Long>,
+    JpaSpecificationExecutor<MusicBand> {
     Optional<MusicBand> findFirstByEstablishmentDate(LocalDate establishmentDate);
 
     Optional<MusicBand> findFirstByOrderByIdAsc();

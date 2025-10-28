@@ -17,8 +17,7 @@ class AlbumTxService {
     Album findByIdReturnsEntity(Long id) {
         return albumRepository.findById(id)
                 .orElseThrow(
-                    () ->
-                    new NestedObjectNotFoundException(
+                    () -> new NestedObjectNotFoundException(
                         String.format("Альбом с id: %s не найден", id)
                     )
                 );

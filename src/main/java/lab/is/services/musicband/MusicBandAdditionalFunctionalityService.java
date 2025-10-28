@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lab.is.bd.entities.MusicBand;
-import lab.is.dto.responses.MusicBandResponseDto;
+import lab.is.dto.responses.musicband.MusicBandResponseDto;
 import lab.is.exceptions.ObjectNotFoundException;
 import lab.is.exceptions.ValueOverflowException;
 import lab.is.repositories.MusicBandRepository;

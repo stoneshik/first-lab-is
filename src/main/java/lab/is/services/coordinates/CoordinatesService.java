@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lab.is.bd.entities.Coordinates;
-import lab.is.dto.requests.coordinates.CoordinatesRequestUpdateDto;
+import lab.is.dto.requests.coordinates.CoordinatesUpdateRequestDto;
 import lab.is.dto.responses.CoordinatesResponseDto;
 import lab.is.exceptions.NestedObjectIsUsedException;
 import lab.is.repositories.CoordinatesRepository;
@@ -35,7 +35,7 @@ public class CoordinatesService {
     }
 
     @Transactional
-    public Coordinates update(long id, CoordinatesRequestUpdateDto dto) {
+    public Coordinates update(long id, CoordinatesUpdateRequestDto dto) {
         Coordinates coordinates = coordinatesTxService.findByIdReturnsEntity(id);
         Coordinates updatedCoordinates = coordinates.toBuilder()
             .x(dto.getX())
@@ -61,6 +61,7 @@ public class CoordinatesService {
         coordinatesRepository.flush();
     }
 
+    @Transactional(readOnly = true)
     public Coordinates findByIdReturnsEntity(Long id) {
         return coordinatesTxService.findByIdReturnsEntity(id);
     }

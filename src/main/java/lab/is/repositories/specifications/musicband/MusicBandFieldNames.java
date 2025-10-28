@@ -1,4 +1,6 @@
-package lab.is.repositories.specifications;
+package lab.is.repositories.specifications.musicband;
+
+import lab.is.repositories.specifications.FieldName;
 
 /*
 * все значения по которым есть фильтрация
@@ -19,7 +21,8 @@ public enum MusicBandFieldNames implements FieldName {
 
     STUDIO("studio"),
     STUDIO_NAME("name"),
-    STUDIO_ADDRESS("address");
+    STUDIO_ADDRESS("address"),
+    ;
 
     private final String fieldName;
 

@@ -1,4 +1,4 @@
-package lab.is.dto.responses;
+package lab.is.dto.responses.musicband;
 
 import java.util.List;
 

@@ -20,8 +20,8 @@ import jakarta.validation.Valid;
 import lab.is.bd.entities.MusicGenre;
 import lab.is.dto.requests.musicband.MusicBandRequestCreateDto;
 import lab.is.dto.requests.musicband.MusicBandRequestUpdateDto;
-import lab.is.dto.responses.MusicBandResponseDto;
-import lab.is.dto.responses.WrapperListMusicBandResponseDto;
+import lab.is.dto.responses.musicband.MusicBandResponseDto;
+import lab.is.dto.responses.musicband.WrapperListMusicBandResponseDto;
 import lab.is.services.musicband.MusicBandService;
 import lombok.RequiredArgsConstructor;
 

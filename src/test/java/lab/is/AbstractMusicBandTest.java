@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import lab.is.dto.responses.MusicBandResponseDto;
+import lab.is.dto.responses.musicband.MusicBandResponseDto;
 
 public abstract class AbstractMusicBandTest extends SpringBootApplicationTest {
     protected void checkEntityExistByIdAndEqualExpectedMusicBandEntity(

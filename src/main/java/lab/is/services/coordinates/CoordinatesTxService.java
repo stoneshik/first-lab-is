@@ -17,8 +17,7 @@ class CoordinatesTxService {
     public Coordinates findByIdReturnsEntity(Long id) {
         return coordinatesRepository.findById(id)
                 .orElseThrow(
-                    () ->
-                    new NestedObjectNotFoundException(
+                    () -> new NestedObjectNotFoundException(
                         String.format("Координаты с id: %s не найдены", id)
                     )
                 );

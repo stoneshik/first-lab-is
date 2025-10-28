@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import lab.is.dto.responses.MusicBandResponseDto;
+import lab.is.dto.responses.musicband.MusicBandResponseDto;
 import lab.is.services.musicband.MusicBandAdditionalFunctionalityService;
 import lombok.RequiredArgsConstructor;
 

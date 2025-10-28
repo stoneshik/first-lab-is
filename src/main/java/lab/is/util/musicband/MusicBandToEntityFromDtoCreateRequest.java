@@ -8,7 +8,7 @@ import lab.is.bd.entities.Coordinates;
 import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.Studio;
 import lab.is.dto.requests.album.AlbumRequestCreateDto;
-import lab.is.dto.requests.coordinates.CoordinatesRequestCreateDto;
+import lab.is.dto.requests.coordinates.CoordinatesCreateRequestDto;
 import lab.is.dto.requests.musicband.MusicBandRequestCreateDto;
 import lab.is.dto.requests.studio.StudioRequestCreateDto;
 import lab.is.exceptions.IncorrectDtoInRequestException;
@@ -63,7 +63,7 @@ public class MusicBandToEntityFromDtoCreateRequest {
     }
 
     private boolean isCombinationInfoAboutNestedObjectsDtoIncorrect(
-        CoordinatesRequestCreateDto coordinates,
+        CoordinatesCreateRequestDto coordinates,
         AlbumRequestCreateDto bestAlbum,
         StudioRequestCreateDto studio,
         Long coordinatesId,
@@ -79,7 +79,7 @@ public class MusicBandToEntityFromDtoCreateRequest {
     }
 
     private Coordinates findOrCreateCoordinatesEntityByMusicBandDto(
-        CoordinatesRequestCreateDto dto,
+        CoordinatesCreateRequestDto dto,
         Long id
     ) {
         if (dto != null) {

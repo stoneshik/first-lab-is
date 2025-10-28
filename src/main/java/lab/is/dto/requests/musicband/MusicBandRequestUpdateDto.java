@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lab.is.bd.entities.MusicGenre;
 import lab.is.dto.requests.album.AlbumRequestUpdateDto;
-import lab.is.dto.requests.coordinates.CoordinatesRequestUpdateDto;
+import lab.is.dto.requests.coordinates.CoordinatesUpdateRequestDto;
 import lab.is.dto.requests.studio.StudioRequestUpdateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +24,7 @@ public class MusicBandRequestUpdateDto {
     private String name;
 
     @Valid
-    private CoordinatesRequestUpdateDto coordinates;
+    private CoordinatesUpdateRequestDto coordinates;
 
     @Positive(message = "{positive}")
     private Long coordinatesId;

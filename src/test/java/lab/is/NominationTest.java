@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import lab.is.bd.entities.MusicGenre;
-import lab.is.dto.responses.NominationResponseDto;
+import lab.is.dto.responses.nomination.NominationResponseDto;
 
 @Testcontainers
 class NominationTest extends SpringBootApplicationTest {

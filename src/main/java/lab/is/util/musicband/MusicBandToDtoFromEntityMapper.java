@@ -3,7 +3,7 @@ package lab.is.util.musicband;
 import org.springframework.stereotype.Service;
 
 import lab.is.bd.entities.MusicBand;
-import lab.is.dto.responses.MusicBandResponseDto;
+import lab.is.dto.responses.musicband.MusicBandResponseDto;
 import lab.is.util.AlbumMapper;
 import lab.is.util.CoordinatesMapper;
 import lab.is.util.StudioMapper;

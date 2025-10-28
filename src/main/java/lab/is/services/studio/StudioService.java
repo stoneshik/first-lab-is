@@ -61,6 +61,7 @@ public class StudioService {
         studioRepository.flush();
     }
 
+    @Transactional(readOnly = true)
     public Studio findByIdReturnsEntity(Long id) {
         return studioTxService.findByIdReturnsEntity(id);
     }
