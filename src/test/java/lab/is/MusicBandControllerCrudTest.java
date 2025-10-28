@@ -10,11 +10,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import lab.is.bd.entities.Album;
-import lab.is.bd.entities.Coordinates;
-import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.MusicGenre;
-import lab.is.bd.entities.Studio;
+import lab.is.dto.responses.AlbumResponseDto;
+import lab.is.dto.responses.CoordinatesResponseDto;
+import lab.is.dto.responses.MusicBandResponseDto;
+import lab.is.dto.responses.StudioResponseDto;
 
 @Testcontainers
 class MusicBandControllerCrudTest extends AbstractMusicBandTest {
@@ -64,11 +64,11 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(3L)
                 .name("created music band")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(4L)
                         .x(123456.0f)
                         .y(2147483647)
@@ -79,7 +79,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .singlesCount(9223372036854775807L)
                 .description("")
                 .bestAlbum(
-                    Album.builder()
+                    AlbumResponseDto.builder()
                         .id(4L)
                         .name("new album")
                         .length(2147483647)
@@ -88,7 +88,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .albumsCount(9223372036854775807L)
                 .establishmentDate(LocalDate.of(2021, 1, 1))
                 .studio(
-                    Studio.builder()
+                    StudioResponseDto.builder()
                         .id(3L)
                         .name("")
                         .address("")
@@ -177,11 +177,11 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(3L)
                 .name("created music band")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(1L)
                         .x(1.0f)
                         .y(2)
@@ -192,7 +192,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .singlesCount(9223372036854775807L)
                 .description("")
                 .bestAlbum(
-                    Album.builder()
+                    AlbumResponseDto.builder()
                         .id(2L)
                         .name("second album")
                         .length(1000)
@@ -201,7 +201,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .albumsCount(9223372036854775807L)
                 .establishmentDate(LocalDate.of(2021, 1, 1))
                 .studio(
-                    Studio.builder()
+                    StudioResponseDto.builder()
                         .id(1L)
                         .name("first studio")
                         .address("first studio address")
@@ -252,11 +252,11 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
     void getMusicBandById_ReturnsResponseWithStatusOk() throws Exception {
         setupDb();
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(1L)
                 .name("first band")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(1L)
                         .x(1.0f)
                         .y(2)
@@ -267,7 +267,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .singlesCount(5L)
                 .description("first band description")
                 .bestAlbum(
-                    Album.builder()
+                    AlbumResponseDto.builder()
                         .id(1L)
                         .name("first album")
                         .length(12)
@@ -276,7 +276,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .albumsCount(2L)
                 .establishmentDate(LocalDate.of(2024, 8, 3))
                 .studio(
-                    Studio.builder()
+                    StudioResponseDto.builder()
                         .id(1L)
                         .name("first studio")
                         .address("first studio address")
@@ -331,11 +331,11 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(1L)
                 .name("012345678901234567890123456789")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(4L)
                         .x(-100.12314f)
                         .y(-2147483648)
@@ -435,11 +435,11 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(1L)
                 .name("first band")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(1L)
                         .x(1.0f)
                         .y(2)
@@ -450,7 +450,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .singlesCount(5L)
                 .description("first band description")
                 .bestAlbum(
-                    Album.builder()
+                    AlbumResponseDto.builder()
                         .id(1L)
                         .name("first album")
                         .length(12)
@@ -459,7 +459,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .albumsCount(2L)
                 .establishmentDate(LocalDate.of(2024, 8, 3))
                 .studio(
-                    Studio.builder()
+                    StudioResponseDto.builder()
                         .id(1L)
                         .name("first studio")
                         .address("first studio address")
@@ -503,11 +503,11 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(1L)
                 .name("012345678901234567890123456789")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(1L)
                         .x(1.0f)
                         .y(2)
@@ -518,7 +518,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .singlesCount(9223372036854775807L)
                 .description(null)
                 .bestAlbum(
-                    Album.builder()
+                    AlbumResponseDto.builder()
                         .id(1L)
                         .name("first album")
                         .length(12)
@@ -527,7 +527,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .albumsCount(9223372036854775807L)
                 .establishmentDate(LocalDate.of(2024, 8, 3))
                 .studio(
-                    Studio.builder()
+                    StudioResponseDto.builder()
                         .id(1L)
                         .name("first studio")
                         .address("first studio address")
@@ -571,11 +571,11 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(1L)
                 .name("first band")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(1L)
                         .x(1.0f)
                         .y(2)
@@ -586,7 +586,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .singlesCount(5L)
                 .description("first band description")
                 .bestAlbum(
-                    Album.builder()
+                    AlbumResponseDto.builder()
                         .id(1L)
                         .name("first album")
                         .length(12)
@@ -595,7 +595,7 @@ class MusicBandControllerCrudTest extends AbstractMusicBandTest {
                 .albumsCount(2L)
                 .establishmentDate(LocalDate.of(2024, 8, 3))
                 .studio(
-                    Studio.builder()
+                    StudioResponseDto.builder()
                         .id(1L)
                         .name("first studio")
                         .address("first studio address")

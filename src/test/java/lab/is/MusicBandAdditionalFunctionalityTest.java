@@ -11,11 +11,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import lab.is.bd.entities.Album;
-import lab.is.bd.entities.Coordinates;
-import lab.is.bd.entities.MusicBand;
 import lab.is.bd.entities.MusicGenre;
-import lab.is.bd.entities.Studio;
+import lab.is.dto.responses.AlbumResponseDto;
+import lab.is.dto.responses.CoordinatesResponseDto;
+import lab.is.dto.responses.MusicBandResponseDto;
+import lab.is.dto.responses.StudioResponseDto;
 
 @Testcontainers
 class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
@@ -38,11 +38,11 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
 
         checkEntityNotExistsById(1L);
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(2L)
                 .name("012345678901234567890123456789")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(2L)
                         .x(-100.12314f)
                         .y(-2147483648)
@@ -74,11 +74,11 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(1L)
                 .name("first band")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(1L)
                         .x(1.0f)
                         .y(2)
@@ -89,7 +89,7 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
                 .singlesCount(5L)
                 .description("first band description")
                 .bestAlbum(
-                    Album.builder()
+                    AlbumResponseDto.builder()
                         .id(1L)
                         .name("first album")
                         .length(12)
@@ -98,7 +98,7 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
                 .albumsCount(2L)
                 .establishmentDate(LocalDate.of(2024, 8, 3))
                 .studio(
-                    Studio.builder()
+                    StudioResponseDto.builder()
                         .id(1L)
                         .name("first studio")
                         .address("first studio address")
@@ -107,11 +107,11 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
                 .build()
         );
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(2L)
                 .name("012345678901234567890123456789")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(2L)
                         .x(-100.12314f)
                         .y(-2147483648)
@@ -248,11 +248,11 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
             );
 
         checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-            MusicBand.builder()
+            MusicBandResponseDto.builder()
                 .id(1L)
                 .name("first band")
                 .coordinates(
-                    Coordinates.builder()
+                    CoordinatesResponseDto.builder()
                         .id(1L)
                         .x(1.0f)
                         .y(2)
@@ -263,7 +263,7 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
                 .singlesCount(6L)
                 .description("first band description")
                 .bestAlbum(
-                    Album.builder()
+                    AlbumResponseDto.builder()
                         .id(1L)
                         .name("first album")
                         .length(12)
@@ -272,7 +272,7 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
                 .albumsCount(2L)
                 .establishmentDate(LocalDate.of(2024, 8, 3))
                 .studio(
-                    Studio.builder()
+                    StudioResponseDto.builder()
                         .id(1L)
                         .name("first studio")
                         .address("first studio address")

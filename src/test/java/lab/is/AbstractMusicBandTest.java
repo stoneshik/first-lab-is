@@ -11,48 +11,48 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import lab.is.bd.entities.MusicBand;
+import lab.is.dto.responses.MusicBandResponseDto;
 
 public abstract class AbstractMusicBandTest extends SpringBootApplicationTest {
     protected void checkEntityExistByIdAndEqualExpectedMusicBandEntity(
-        MusicBand musicBand  // TODO переделать в dto
+        MusicBandResponseDto musicBandResponseDto
     ) throws Exception {
         final String endpoint = getEndpointGettingEntityById();
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .get(endpoint, musicBand.getId());
+            .get(endpoint, musicBandResponseDto.getId());
 
         List<ResultMatcher> matchers = new ArrayList<>();
         matchers.addAll(List.of(
             status().isOk(),
             content().contentTypeCompatibleWith("application/json"),
-            jsonPath("$.id").value(musicBand.getId()),
-            jsonPath("$.name").value(musicBand.getName()),
-            jsonPath("$.coordinates.id").value(musicBand.getCoordinates().getId()),
-            jsonPath("$.coordinates.x").value(musicBand.getCoordinates().getX()),
-            jsonPath("$.coordinates.y").value(musicBand.getCoordinates().getY()),
-            jsonPath("$.genre").value(musicBand.getGenre().name()),
-            jsonPath("$.numberOfParticipants").value(musicBand.getNumberOfParticipants()),
-            jsonPath("$.singlesCount").value(musicBand.getSinglesCount()),
-            jsonPath("$.description").value(musicBand.getDescription()),
-            jsonPath("$.albumsCount").value(musicBand.getAlbumsCount()),
-            jsonPath("$.establishmentDate").value(musicBand.getEstablishmentDate().toString())
+            jsonPath("$.id").value(musicBandResponseDto.getId()),
+            jsonPath("$.name").value(musicBandResponseDto.getName()),
+            jsonPath("$.coordinates.id").value(musicBandResponseDto.getCoordinates().getId()),
+            jsonPath("$.coordinates.x").value(musicBandResponseDto.getCoordinates().getX()),
+            jsonPath("$.coordinates.y").value(musicBandResponseDto.getCoordinates().getY()),
+            jsonPath("$.genre").value(musicBandResponseDto.getGenre().name()),
+            jsonPath("$.numberOfParticipants").value(musicBandResponseDto.getNumberOfParticipants()),
+            jsonPath("$.singlesCount").value(musicBandResponseDto.getSinglesCount()),
+            jsonPath("$.description").value(musicBandResponseDto.getDescription()),
+            jsonPath("$.albumsCount").value(musicBandResponseDto.getAlbumsCount()),
+            jsonPath("$.establishmentDate").value(musicBandResponseDto.getEstablishmentDate().toString())
         ));
 
-        if (musicBand.getBestAlbum() != null) {
+        if (musicBandResponseDto.getBestAlbum() != null) {
             matchers.addAll(List.of(
-                jsonPath("$.bestAlbum.id").value(musicBand.getBestAlbum().getId()),
-                jsonPath("$.bestAlbum.name").value(musicBand.getBestAlbum().getName()),
-                jsonPath("$.bestAlbum.length").value(musicBand.getBestAlbum().getLength())
+                jsonPath("$.bestAlbum.id").value(musicBandResponseDto.getBestAlbum().getId()),
+                jsonPath("$.bestAlbum.name").value(musicBandResponseDto.getBestAlbum().getName()),
+                jsonPath("$.bestAlbum.length").value(musicBandResponseDto.getBestAlbum().getLength())
             ));
         } else {
             matchers.add(jsonPath("$.bestAlbum").doesNotExist());
         }
 
-        if (musicBand.getStudio() != null) {
+        if (musicBandResponseDto.getStudio() != null) {
             matchers.addAll(List.of(
-                jsonPath("$.studio.id").value(musicBand.getStudio().getId()),
-                jsonPath("$.studio.name").value(musicBand.getStudio().getName()),
-                jsonPath("$.studio.address").value(musicBand.getStudio().getAddress())
+                jsonPath("$.studio.id").value(musicBandResponseDto.getStudio().getId()),
+                jsonPath("$.studio.name").value(musicBandResponseDto.getStudio().getName()),
+                jsonPath("$.studio.address").value(musicBandResponseDto.getStudio().getAddress())
             ));
         } else {
             matchers.add(
