@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -37,6 +38,13 @@ abstract class SpringBootApplicationTest {
         new PostgreSQLContainer<>("postgres:16.4")
             .withReuse(false)
             .withDatabaseName("is_service");
+
+    @AfterAll
+    void stopContainers() {
+        if (postgresSqlContainer.isRunning()) {
+            postgresSqlContainer.stop();
+        }
+    }
 
     @Autowired
     protected MockMvc mockMvc;

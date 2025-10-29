@@ -298,4 +298,41 @@ class MusicBandAdditionalFunctionalityTest extends AbstractMusicBandTest {
 
         checkEntityNotExistsById(id);
     }
+
+    @Test
+    void addSingleToBand_ReturnsResponseWithStatusValueOverflowException() throws Exception {
+        setupDb();
+        final Long id = 2L;
+
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .post("/api/v1/music-bands/{id}/singles", id);
+
+        mockMvc
+            .perform(requestBuilder)
+            .andExpectAll(
+                status().isConflict()
+            );
+
+        checkEntityExistByIdAndEqualExpectedMusicBandEntity(
+            MusicBandResponseDto.builder()
+                .id(2L)
+                .name("012345678901234567890123456789")
+                .coordinates(
+                    CoordinatesResponseDto.builder()
+                        .id(2L)
+                        .x(-100.12314f)
+                        .y(-2147483648)
+                        .build()
+                )
+                .genre(MusicGenre.POST_PUNK)
+                .numberOfParticipants(9223372036854775807L)
+                .singlesCount(9223372036854775807L)
+                .description(null)
+                .bestAlbum(null)
+                .albumsCount(9223372036854775807L)
+                .establishmentDate(LocalDate.of(2024, 8, 3))
+                .studio(null)
+                .build()
+        );
+    }
 }

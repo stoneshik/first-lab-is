@@ -13,6 +13,7 @@ public class NominationMapper {
             .id(nominationEntity.getId())
             .musicBandId(musicBand.getId())
             .musicBandName(musicBand.getName())
+            .musicGenre(musicBand.getGenre())
             .nominatedAt(nominationEntity.getNominatedAt())
             .build();
     }

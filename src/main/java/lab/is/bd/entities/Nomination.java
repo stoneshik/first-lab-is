@@ -2,6 +2,9 @@ package lab.is.bd.entities;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.ConstraintMode;
 import jakarta.persistence.Entity;
@@ -47,12 +50,13 @@ public class Nomination {
 
     @Valid
     @NotNull(message = "{not-null}")
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {})
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
         name = "music_band_id",
         nullable = false,
         foreignKey = @ForeignKey(ConstraintMode.CONSTRAINT)
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private MusicBand musicBand;
 
     @ToString.Include

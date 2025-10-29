@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -102,6 +103,15 @@ public class ExceptionHandlerController {
             .timestamp(new Date())
             .message("Передан объект неправильного формата")
             .violations(errors)
+            .build();
+    }
+
+    @ExceptionHandler(InternalServerError.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorMessageResponseDto handleException(InternalServerError e) {
+        return ErrorMessageResponseDto.builder()
+            .timestamp(new Date())
+            .message("Ошибка сервера")
             .build();
     }
 }
