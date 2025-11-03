@@ -9,7 +9,6 @@ spring:
       username: ${CONTAINER.USERNAME}
       password: ${CONTAINER.PASSWORD}
       url: ${CONTAINER.URL}
-      transaction-isolation: "TRANSACTION_SERIALIZABLE"
   jpa:
     generate-ddl: true
     hibernate.ddl-auto: "update"
