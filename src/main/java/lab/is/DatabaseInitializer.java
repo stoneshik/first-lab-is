@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 @Profile("dev")
 @RequiredArgsConstructor
 public class DatabaseInitializer implements CommandLineRunner {
-
     private final CoordinatesRepository coordinatesRepository;
     private final AlbumRepository albumRepository;
     private final StudioRepository studioRepository;
@@ -73,7 +72,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 .genre(MusicGenre.PROGRESSIVE_ROCK)
                 .numberOfParticipants(5L)
                 .singlesCount(3L)
-                .description("A progressive rock band with melodic harmonies")
+                .description("Группа прогрессивного рока с мелодичными гармониями")
                 .bestAlbum(a1)
                 .albumsCount(2)
                 .establishmentDate(LocalDate.of(2018, 5, 12))
@@ -101,7 +100,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                 .genre(MusicGenre.BRIT_POP)
                 .numberOfParticipants(6L)
                 .singlesCount(5L)
-                .description("Brit-pop ensemble with melodic vocals")
+                .description("Брит-поп ансамбль с мелодичным вокалом")
                 .bestAlbum(a3)
                 .albumsCount(3)
                 .establishmentDate(LocalDate.of(2015, 2, 15))
