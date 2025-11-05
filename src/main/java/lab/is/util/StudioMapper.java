@@ -3,7 +3,7 @@ package lab.is.util;
 import lab.is.bd.entities.Studio;
 import lab.is.dto.requests.studio.StudioRequestCreateDto;
 import lab.is.dto.requests.studio.StudioRequestUpdateDto;
-import lab.is.dto.responses.StudioResponseDto;
+import lab.is.dto.responses.studios.StudioResponseDto;
 
 public class StudioMapper {
     private StudioMapper() {}

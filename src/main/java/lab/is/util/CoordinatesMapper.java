@@ -3,7 +3,7 @@ package lab.is.util;
 import lab.is.bd.entities.Coordinates;
 import lab.is.dto.requests.coordinates.CoordinatesCreateRequestDto;
 import lab.is.dto.requests.coordinates.CoordinatesUpdateRequestDto;
-import lab.is.dto.responses.CoordinatesResponseDto;
+import lab.is.dto.responses.coordinates.CoordinatesResponseDto;
 
 public class CoordinatesMapper {
     private CoordinatesMapper() {}

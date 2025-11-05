@@ -1,11 +1,17 @@
 package lab.is.services.album;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lab.is.bd.entities.Album;
 import lab.is.dto.requests.album.AlbumRequestUpdateDto;
-import lab.is.dto.responses.AlbumResponseDto;
+import lab.is.dto.responses.albums.AlbumResponseDto;
+import lab.is.dto.responses.albums.WrapperListAlbumResponseDto;
 import lab.is.exceptions.NestedObjectIsUsedException;
 import lab.is.repositories.AlbumRepository;
 import lab.is.util.AlbumMapper;
@@ -16,6 +22,26 @@ import lombok.RequiredArgsConstructor;
 public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumTxService albumTxService;
+
+    @Transactional(readOnly = true)
+    public WrapperListAlbumResponseDto findAll(Pageable pageable) {
+        Page<Album> page = albumRepository.findAll(pageable);
+        List<AlbumResponseDto> albumResponseDtos = new ArrayList<>();
+
+        page.forEach(album ->
+            albumResponseDtos.add(
+                AlbumMapper.toDtoFromEntity(album)
+            )
+        );
+
+        return WrapperListAlbumResponseDto.builder()
+            .totalElements(page.getTotalElements())
+            .totalPages(page.getTotalPages())
+            .currentPage(page.getNumber())
+            .pageSize(page.getNumberOfElements())
+            .albums(albumResponseDtos)
+            .build();
+    }
 
     @Transactional(readOnly = true)
     public AlbumResponseDto findById(Long id) {

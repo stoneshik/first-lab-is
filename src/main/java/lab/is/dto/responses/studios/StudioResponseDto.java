@@ -1,4 +1,4 @@
-package lab.is.dto.responses;
+package lab.is.dto.responses.studios;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AlbumResponseDto {
+public class StudioResponseDto {
     private Long id;
     private String name;
-    private int length;
+    private String address;
 }

@@ -4,9 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import lab.is.bd.entities.MusicGenre;
-import lab.is.dto.responses.AlbumResponseDto;
-import lab.is.dto.responses.CoordinatesResponseDto;
-import lab.is.dto.responses.StudioResponseDto;
+import lab.is.dto.responses.albums.AlbumResponseDto;
+import lab.is.dto.responses.coordinates.CoordinatesResponseDto;
+import lab.is.dto.responses.studios.StudioResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

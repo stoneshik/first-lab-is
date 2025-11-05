@@ -1,5 +1,6 @@
 package lab.is;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,63 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class StudioControllerTest extends SpringBootApplicationTest {
     protected String getEndpointGettingEntityById() {
         return "/api/v1/studios/{id}";
+    }
+
+    @Test
+    void getEmptyListStudios_ReturnsResponseWithStatusOk() throws Exception {
+        setupEmptyDb();
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .get("/api/v1/studios");
+
+        mockMvc
+            .perform(requestBuilder)
+            .andExpectAll(
+                status().isOk(),
+                content().contentTypeCompatibleWith("application/json"),
+                content().json("""
+                    {
+                        "totalElements": 0,
+                        "totalPages": 0,
+                        "currentPage": 0,
+                        "pageSize": 0,
+                        "studios": []
+                    }
+                """)
+            );
+    }
+
+    @Test
+    void getListStudios_ReturnsResponseWithStatusOk() throws Exception {
+        setupDb();
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .get("/api/v1/studios");
+
+        mockMvc
+            .perform(requestBuilder)
+            .andExpectAll(
+                status().isOk(),
+                content().contentTypeCompatibleWith("application/json"),
+                content().json("""
+                    {
+                        "totalElements": 2,
+                        "totalPages": 1,
+                        "currentPage": 0,
+                        "pageSize": 2,
+                        "studios": [
+                            {
+                                "id": 1,
+                                "name": "first studio",
+                                "address": "first studio address"
+                            },
+                            {
+                                "id": 2,
+                                "name": "second studio",
+                                "address": "second studio address"
+                            }
+                        ]
+                    }
+                """)
+            );
     }
 
     @Test

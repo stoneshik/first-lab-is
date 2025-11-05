@@ -1,11 +1,17 @@
 package lab.is.services.coordinates;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lab.is.bd.entities.Coordinates;
 import lab.is.dto.requests.coordinates.CoordinatesUpdateRequestDto;
-import lab.is.dto.responses.CoordinatesResponseDto;
+import lab.is.dto.responses.coordinates.CoordinatesResponseDto;
+import lab.is.dto.responses.coordinates.WrapperListCoordinatesResponseDto;
 import lab.is.exceptions.NestedObjectIsUsedException;
 import lab.is.repositories.CoordinatesRepository;
 import lab.is.util.CoordinatesMapper;
@@ -16,6 +22,26 @@ import lombok.RequiredArgsConstructor;
 public class CoordinatesService {
     private final CoordinatesRepository coordinatesRepository;
     private final CoordinatesTxService coordinatesTxService;
+
+    @Transactional(readOnly = true)
+    public WrapperListCoordinatesResponseDto findAll(Pageable pageable) {
+        Page<Coordinates> page = coordinatesRepository.findAll(pageable);
+        List<CoordinatesResponseDto> coordinatesResponseDtos = new ArrayList<>();
+
+        page.forEach(coordinates ->
+            coordinatesResponseDtos.add(
+                CoordinatesMapper.toDtoFromEntity(coordinates)
+            )
+        );
+
+        return WrapperListCoordinatesResponseDto.builder()
+            .totalElements(page.getTotalElements())
+            .totalPages(page.getTotalPages())
+            .currentPage(page.getNumber())
+            .pageSize(page.getNumberOfElements())
+            .coordinates(coordinatesResponseDtos)
+            .build();
+    }
 
     @Transactional(readOnly = true)
     public CoordinatesResponseDto findById(Long id) {

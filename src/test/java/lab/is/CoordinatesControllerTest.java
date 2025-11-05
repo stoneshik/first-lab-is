@@ -1,5 +1,6 @@
 package lab.is;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,68 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class CoordinatesControllerTest extends SpringBootApplicationTest {
     protected String getEndpointGettingEntityById() {
         return "/api/v1/coordinates/{id}";
+    }
+
+    @Test
+    void getEmptyListCoordinates_ReturnsResponseWithStatusOk() throws Exception {
+        setupEmptyDb();
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .get("/api/v1/coordinates");
+
+        mockMvc
+            .perform(requestBuilder)
+            .andExpectAll(
+                status().isOk(),
+                content().contentTypeCompatibleWith("application/json"),
+                content().json("""
+                    {
+                        "totalElements": 0,
+                        "totalPages": 0,
+                        "currentPage": 0,
+                        "pageSize": 0,
+                        "coordinates": []
+                    }
+                """)
+            );
+    }
+
+    @Test
+    void getListCoordinates_ReturnsResponseWithStatusOk() throws Exception {
+        setupDb();
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .get("/api/v1/coordinates");
+
+        mockMvc
+            .perform(requestBuilder)
+            .andExpectAll(
+                status().isOk(),
+                content().contentTypeCompatibleWith("application/json"),
+                content().json("""
+                    {
+                        "totalElements": 3,
+                        "totalPages": 1,
+                        "currentPage": 0,
+                        "pageSize": 3,
+                        "coordinates": [
+                            {
+                                "id": 1,
+                                "x": 1.0,
+                                "y": 2
+                            },
+                            {
+                                "id": 2,
+                                "x": -100.12314,
+                                "y": -2147483648
+                            },
+                            {
+                                "id": 3,
+                                "x": 1000.0,
+                                "y": 2147483647
+                            }
+                        ]
+                    }
+                """)
+            );
     }
 
     @Test

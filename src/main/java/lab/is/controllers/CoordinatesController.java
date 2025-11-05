@@ -2,6 +2,9 @@ package lab.is.controllers;
 
 import java.net.URI;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lab.is.dto.requests.coordinates.CoordinatesCreateRequestDto;
 import lab.is.dto.requests.coordinates.CoordinatesUpdateRequestDto;
-import lab.is.dto.responses.CoordinatesResponseDto;
+import lab.is.dto.responses.coordinates.CoordinatesResponseDto;
+import lab.is.dto.responses.coordinates.WrapperListCoordinatesResponseDto;
 import lab.is.services.coordinates.CoordinatesService;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +29,15 @@ import lombok.RequiredArgsConstructor;
 public class CoordinatesController {
     private static final String URI_RESOURCE = "/api/v1/coordinates";
     private final CoordinatesService coordinatesService;
+
+    @GetMapping
+    public ResponseEntity<WrapperListCoordinatesResponseDto> getAll(
+        @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
+    ) {
+        return ResponseEntity.ok(
+            coordinatesService.findAll(pageable)
+        );
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CoordinatesResponseDto> getById(@PathVariable Long id) {

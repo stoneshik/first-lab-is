@@ -1,4 +1,4 @@
-package lab.is.dto.responses;
+package lab.is.dto.responses.coordinates;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class StudioResponseDto {
+public class CoordinatesResponseDto {
     private Long id;
-    private String name;
-    private String address;
+    private Float x;
+    private int y;
 }

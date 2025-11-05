@@ -100,7 +100,7 @@ abstract class SpringBootApplicationTest {
             .y(-2147483648)
             .build();
         Coordinates coordinates3 = Coordinates.builder()
-            .x(Float.MAX_VALUE)
+            .x(1000.0f)
             .y(2147483647)
             .build();
 

@@ -1,4 +1,4 @@
-package lab.is.dto.responses;
+package lab.is.dto.responses.albums;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CoordinatesResponseDto {
+public class AlbumResponseDto {
     private Long id;
-    private Float x;
-    private int y;
+    private String name;
+    private int length;
 }
