@@ -83,7 +83,7 @@ public class ExceptionHandlerController {
         );
         return ErrorMessageResponseDto.builder()
             .timestamp(new Date())
-            .message("Передан объект неправильного формата")
+            .message("Переданы неправильные значения")
             .violations(errors)
             .build();
     }
@@ -101,7 +101,7 @@ public class ExceptionHandlerController {
         );
         return ErrorMessageResponseDto.builder()
             .timestamp(new Date())
-            .message("Передан объект неправильного формата")
+            .message("Переданы неправильные значения")
             .violations(errors)
             .build();
     }

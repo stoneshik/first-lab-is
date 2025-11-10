@@ -78,7 +78,8 @@ public class AlbumService {
         if (isUsedNestedObject(album)) {
             throw new NestedObjectIsUsedException(
                 String.format(
-                    "Альбом с id: %s не может удален, так как связан с другими объектами",
+                    "Альбом %s с id: %s не может быть удален, так как связан с другими объектами",
+                    album.getName(),
                     id
                 )
             );
