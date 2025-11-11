@@ -54,43 +54,37 @@ class MusicBandControllerGetListTest extends AbstractMusicBandTest {
                 jsonPath("$.currentPage").value(0),
                 jsonPath("$.pageSize").value(2),
 
-                jsonPath("$.musicBands[0].id").value(1L),
-                jsonPath("$.musicBands[0].name").value("first band"),
-
-                jsonPath("$.musicBands[0].coordinates.id").value(1L),
-                jsonPath("$.musicBands[0].coordinates.x").value(1.0f),
-                jsonPath("$.musicBands[0].coordinates.y").value(2),
-
-                jsonPath("$.musicBands[0].genre").value("PROGRESSIVE_ROCK"),
-                jsonPath("$.musicBands[0].numberOfParticipants").value(4),
-                jsonPath("$.musicBands[0].singlesCount").value(5),
-                jsonPath("$.musicBands[0].description").value("first band description"),
-
-                jsonPath("$.musicBands[0].bestAlbum.id").value(1L),
-                jsonPath("$.musicBands[0].bestAlbum.name").value("first album"),
-                jsonPath("$.musicBands[0].bestAlbum.length").value(12),
-                jsonPath("$.musicBands[0].albumsCount").value(2L),
+                jsonPath("$.musicBands[0].id").value(2L),
+                jsonPath("$.musicBands[0].name").value("012345678901234567890123456789"),
+                jsonPath("$.musicBands[0].coordinates.id").value(2L),
+                jsonPath("$.musicBands[0].coordinates.x").value(-100.12314f),
+                jsonPath("$.musicBands[0].coordinates.y").value(-2147483648),
+                jsonPath("$.musicBands[0].genre").value("POST_PUNK"),
+                jsonPath("$.musicBands[0].numberOfParticipants").value(9223372036854775807L),
+                jsonPath("$.musicBands[0].singlesCount").value(9223372036854775807L),
+                jsonPath("$.musicBands[0].description").doesNotExist(),
+                jsonPath("$.musicBands[0].bestAlbum").doesNotExist(),
+                jsonPath("$.musicBands[0].albumsCount").value(9223372036854775807L),
                 jsonPath("$.musicBands[0].establishmentDate").value("2024-08-03"),
+                jsonPath("$.musicBands[0].studio").doesNotExist(),
 
-                jsonPath("$.musicBands[0].studio.id").value(1L),
-                jsonPath("$.musicBands[0].studio.name").value("first studio"),
-                jsonPath("$.musicBands[0].studio.address").value("first studio address"),
-
-                jsonPath("$.musicBands[1].id").value(2L),
-                jsonPath("$.musicBands[1].name").value("012345678901234567890123456789"),
-
-                jsonPath("$.musicBands[1].coordinates.id").value(2L),
-                jsonPath("$.musicBands[1].coordinates.x").value(-100.12314f),
-                jsonPath("$.musicBands[1].coordinates.y").value(-2147483648),
-
-                jsonPath("$.musicBands[1].genre").value("POST_PUNK"),
-                jsonPath("$.musicBands[1].numberOfParticipants").value(9223372036854775807L),
-                jsonPath("$.musicBands[1].singlesCount").value(9223372036854775807L),
-                jsonPath("$.musicBands[1].description").doesNotExist(),
-                jsonPath("$.musicBands[1].bestAlbum").doesNotExist(),
-                jsonPath("$.musicBands[1].albumsCount").value(9223372036854775807L),
+                jsonPath("$.musicBands[1].id").value(1L),
+                jsonPath("$.musicBands[1].name").value("first band"),
+                jsonPath("$.musicBands[1].coordinates.id").value(1L),
+                jsonPath("$.musicBands[1].coordinates.x").value(1.0f),
+                jsonPath("$.musicBands[1].coordinates.y").value(2),
+                jsonPath("$.musicBands[1].genre").value("PROGRESSIVE_ROCK"),
+                jsonPath("$.musicBands[1].numberOfParticipants").value(4),
+                jsonPath("$.musicBands[1].singlesCount").value(5),
+                jsonPath("$.musicBands[1].description").value("first band description"),
+                jsonPath("$.musicBands[1].bestAlbum.id").value(1L),
+                jsonPath("$.musicBands[1].bestAlbum.name").value("first album"),
+                jsonPath("$.musicBands[1].bestAlbum.length").value(12),
+                jsonPath("$.musicBands[1].albumsCount").value(2L),
                 jsonPath("$.musicBands[1].establishmentDate").value("2024-08-03"),
-                jsonPath("$.musicBands[1].studio").doesNotExist()
+                jsonPath("$.musicBands[1].studio.id").value(1L),
+                jsonPath("$.musicBands[1].studio.name").value("first studio"),
+                jsonPath("$.musicBands[1].studio.address").value("first studio address")
             );
     }
 

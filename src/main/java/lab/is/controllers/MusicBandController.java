@@ -40,7 +40,7 @@ public class MusicBandController {
         @RequestParam(required = false) String bestAlbumName,
         @RequestParam(required = false) String studioName,
         @RequestParam(required = false) String studioAddress,
-        @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
+        @PageableDefault(page = 0, size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable
     ) {
         return ResponseEntity.ok(
             musicBandService.findAll(

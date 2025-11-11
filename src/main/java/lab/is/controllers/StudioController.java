@@ -32,7 +32,7 @@ public class StudioController {
 
     @GetMapping
     public ResponseEntity<WrapperListStudioResponseDto> getAll(
-        @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
+        @PageableDefault(page = 0, size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable
     ) {
         return ResponseEntity.ok(
             studioService.findAll(pageable)

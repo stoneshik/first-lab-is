@@ -32,7 +32,7 @@ public class AlbumController {
 
     @GetMapping
     public ResponseEntity<WrapperListAlbumResponseDto> getAll(
-        @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
+        @PageableDefault(page = 0, size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable
     ) {
         return ResponseEntity.ok(
             albumService.findAll(pageable)
