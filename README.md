@@ -21,9 +21,17 @@ IS_SERVICE_BD_PASSWORD=admin
 IS_SERVICE_BD_URL=jdbc:postgresql://localhost:5432/is_service
 ```
 
-Проброс порта для helios:
+Подключение к серверу:<br>
+`ssh s33xxxx@se.ifmo.ru -p 2222`
 
-`ssh -L 8080:localhost:335159 s335159@se.ifmo.ru -p 2222`
+Проброс порта для helios:<br>
+`ssh -L 8080:localhost:33xxxx s33xxxx@se.ifmo.ru -p 2222`
+
+Url подключения к БД<br>
+`jdbc:postgresql://localhost:5432/studs`
+
+Сбор jar файла с пропуском тестов<br>
+`mvn package -DskipTests`
 
 Ссылка на фронтенд - https://github.com/stoneshik/first-lab-is-frontend
 
