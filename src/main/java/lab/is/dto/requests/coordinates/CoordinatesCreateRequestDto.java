@@ -14,5 +14,6 @@ public class CoordinatesCreateRequestDto {
     @NotNull(message = "{not-null}")
     private Float x;
 
-    private int y;
+    @NotNull(message = "{not-null}")
+    private Integer y;
 }

@@ -1,6 +1,7 @@
 package lab.is.dto.requests.album;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ public class AlbumRequestCreateDto {
     @NotBlank(message = "{not-blank}")
     private String name;
 
+    @NotNull(message = "{not-null}")
     @Positive(message = "{positive}")
-    private int length;
+    private Integer length;
 }

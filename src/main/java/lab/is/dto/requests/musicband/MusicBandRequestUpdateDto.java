@@ -46,8 +46,9 @@ public class MusicBandRequestUpdateDto {
     @Positive(message = "{positive}")
     private Long bestAlbumId;
 
+    @NotNull(message = "{not-null}")
     @Positive(message = "{positive}")
-    private long albumsCount;
+    private Long albumsCount;
 
     @NotNull(message = "{not-null}")
     private LocalDate establishmentDate;
